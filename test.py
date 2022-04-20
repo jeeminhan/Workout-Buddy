@@ -55,7 +55,8 @@ with mp_pose.Pose(
     if not success:
       print("Ignoring empty camera frame.")
       # If loading a video, use 'break' instead of 'continue'.
-      continue
+      break
+      #continue
 
     # To improve performance, optionally mark the image as not writeable to
     # pass by reference.

@@ -4,6 +4,8 @@ mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_pose = mp.solutions.pose
 
+count = 0
+position = None
 # For static images:
 # IMAGE_FILES = []
 # BG_COLOR = (192, 192, 192) # gray
@@ -49,8 +51,8 @@ mp_pose = mp.solutions.pose
 cap = cv2.VideoCapture(0)
 font = cv2.FONT_HERSHEY_SIMPLEX
 with mp_pose.Pose(
-    min_detection_confidence=0.5,
-    min_tracking_confidence=0.5) as pose:
+    min_detection_confidence=0.7,
+    min_tracking_confidence=0.7) as pose:
   while cap.isOpened():
     success, image = cap.read()
     if not success:
@@ -58,9 +60,6 @@ with mp_pose.Pose(
       # If loading a video, use 'break' instead of 'continue'.
       break
       #continue
-
-    
-    
     
     # To improve performance, optionally mark the image as not writeable to
     # pass by reference.
@@ -71,15 +70,32 @@ with mp_pose.Pose(
     # Draw the pose annotation on the image.
     image.flags.writeable = True
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-    mp_drawing.draw_landmarks(
-        image,
-        results.pose_landmarks,
-        mp_pose.POSE_CONNECTIONS,
-        landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
+
+    imlist = []
+    if(results.pose_landmarks):
+      mp_drawing.draw_landmarks(
+          image,
+          results.pose_landmarks,
+          mp_pose.POSE_CONNECTIONS,
+          landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
+      for id,im in enumerate(results.pose_landmarks.landmark):
+        h,w,_=image.shape
+        X,Y=int(im.x*w),int(im.y*h)
+        imlist.append([id,X,Y])
+      
+      if len(imlist) != 0:
+        if(imlist[12][2] and imlist[11][2] >= imlist[14][2] and imlist[13][2]):
+          position="down"
+        if(imlist[12][2] and imlist[11][2] <= imlist[14][2] and imlist[13][2]) and position=="down":
+          position = "up"
+          count+=1
+          print(count)
+
+
     # Flip the image horizontally for a selfie-view display.
     image=cv2.flip(image,1)
     cv2.putText(image, 
-            'Push-ups', 
+            'Push-ups: ' + str(count), 
             (50, 50), 
             font, 1, 
             (0, 0, 0), 

@@ -49,7 +49,9 @@ with md_pose.Pose(
                 position = "up"
                 count+=1
                 print(count)
+
             cv2.imshow("Push-up counter", image)
+            
         key=cv2.waitKey(1)
         if key == ord('q'):
             break

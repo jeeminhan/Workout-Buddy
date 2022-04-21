@@ -35,17 +35,23 @@ e = Entry(root, width=50)
 
 
 def myClick():
-    myLabel = Label(root, text="Look I clicked a button!"+e.get())
-    myLabel.grid(row=1, column=2)
+    
+    # myLabel = Label(root, text="Look I clicked a button!"+e.get())
+    # myLabel.grid(row=3, column=2)
+    pass
 
-myLabel1 = Label(root, text="Hello World!")
-myLabel2 = Label(root, text="User!")
+myLabel1 = Label(root, text="Welcome to Workout Buddy!", fg="blue", bg="#f5f5dc", font=("Arial", 25))
+#myLabel2 = Label(root, text="User!")
 #bg does not work
-myButton = Button(root, text="Enter Your Name!", padx=50, pady=50, fg="blue", bg="#f5f5dc", command=myClick)
+myButton1 = Button(root, text="User 1", fg="blue", bg="#f5f5dc", command=myClick)
+myButton2 = Button(root, text="User 1", padx=5, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
+myButton3 = Button(root, text="User 1", padx=5, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
 
 myLabel1.grid(row=0, column=0)
-myLabel2.grid(row=1, column=0)
-myButton.grid(row=2, column=0)
+#myLabel2.grid(row=1, column=0)
+myButton1.grid(row=1, column=0)
+myButton2.grid(row=1, column=1)
+myButton3.grid(row=1, column=2)
 
 e.grid(row=3, column=1)
 e.get

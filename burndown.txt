@@ -7,3 +7,4 @@ Notes - Parameters for determining if a push-up is valid
 - Depth (how low you go)
 - Hips being too high
 - Arms being too wide
+- Angle of elbow being around 45 degrees

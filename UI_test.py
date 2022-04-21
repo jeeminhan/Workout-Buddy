@@ -51,7 +51,7 @@ def workoutFrame(root):
     def myClick():
         for widgets in frame.winfo_children():
             widgets.destroy()
-        Frame1(root)
+        mainFrame(root)
 
 
     myLabel1 = Label(frame, text="You are now working out", fg="blue", bg="#f5f5dc")
@@ -59,28 +59,36 @@ def workoutFrame(root):
     myButton1 = Button(frame, text="Done", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
     myButton1.grid(row=1, column=0)
 
-def Frame2(root):
 
+def createUserFrame(root, user):
     #Create a frame
     frame = Frame(root)
     frame.grid(row=1, column=2)
 
     def myClick():
+        newUser = e.get()
         for widgets in frame.winfo_children():
             widgets.destroy()
-        Frame1(root)
+        #return newUser
+        user = newUser
+        print(user)
+        mainFrame()
+        
 
 
     myLabel1 = Label(frame, text="Choose Username", fg="blue", bg="#f5f5dc")
     myLabel1.grid(row=0, column=0)
+    e = Entry(frame, width=50)
+    e.grid(row=1, column=0)
     myButton1 = Button(frame, text="Done", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
-    myButton1.grid(row=1, column=0)
+    myButton1.grid(row=2, column=0)
 
-def Frame1(root):
-    def createUser():
+def mainFrame(root, user1, user2, user3):
+    def createUser(user):
         for widgets in frame.winfo_children():
             widgets.destroy()
-        Frame2(root)
+        createUserFrame(root,user)
+        print(user)
 
     def startWorkout():
         for widgets in frame.winfo_children():
@@ -96,9 +104,10 @@ def Frame1(root):
     myLabel1 = Label(frame, text="Welcome to", fg="blue", bg="#f5f5dc", font=("Arial", 25))
     myLabel2 = Label(frame, text="Workout Buddy!", fg="blue", bg="#f5f5dc", font=("Arial", 25))
 
-    myButton1 = Button(frame, text="Add User", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=createUser)
-    myButton2 = Button(frame, text="Add User", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=startWorkout)
-    myButton3 = Button(frame, text="Add User", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=createUser)
+    # TODO create a intermediate function to choose between create User and workout frame
+    myButton1 = Button(frame, text=user1, padx=20, pady=15, fg="blue", bg="#f5f5dc", command=lambda:createUser(user1))
+    myButton2 = Button(frame, text=user2, padx=20, pady=15, fg="blue", bg="#f5f5dc", command=lambda:createUser(user2))
+    myButton3 = Button(frame, text=user3, padx=20, pady=15, fg="blue", bg="#f5f5dc", command=lambda:createUser(user3))
 
     myLabel1.grid(row=0, column=0)
     myLabel2.grid(row=0, column=1)
@@ -111,9 +120,13 @@ def Frame1(root):
 #Create a button to close the window
 # frame.pack()
 
-root= Tk()
+#--- MAIN OF PROGRAM
+user1 = "Add User"
+user2 = "Add User"
+user3 = "Add User"
 
-frame = Frame1(root)
+root= Tk()
+frame = mainFrame(root)
 
 #Set the geometry of frame
 root.geometry("600x250")

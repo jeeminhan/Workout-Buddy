@@ -47,6 +47,7 @@ mp_pose = mp.solutions.pose
 
 # For webcam input:
 cap = cv2.VideoCapture(0)
+font = cv2.FONT_HERSHEY_SIMPLEX
 with mp_pose.Pose(
     min_detection_confidence=0.5,
     min_tracking_confidence=0.5) as pose:
@@ -58,6 +59,9 @@ with mp_pose.Pose(
       break
       #continue
 
+    
+    
+    
     # To improve performance, optionally mark the image as not writeable to
     # pass by reference.
     image.flags.writeable = False
@@ -73,7 +77,21 @@ with mp_pose.Pose(
         mp_pose.POSE_CONNECTIONS,
         landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
     # Flip the image horizontally for a selfie-view display.
-    cv2.imshow('MediaPipe Pose', cv2.flip(image, 1))
-    if cv2.waitKey(5) & 0xFF == 27:
-      break
+    image=cv2.flip(image,1)
+    cv2.putText(image, 
+            'Push-ups', 
+            (50, 50), 
+            font, 1, 
+            (0, 0, 0), 
+            2, 
+            cv2.LINE_4)
+
+    cv2.imshow('MediaPipe Pose', image)
+    
+    
+
+    key=cv2.waitKey(1)
+    if key == ord('q'):
+        break
+      
 cap.release()

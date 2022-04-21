@@ -40,23 +40,27 @@ def myClick():
     # myLabel.grid(row=3, column=2)
     pass
 
-myLabel1 = Label(root, text="Welcome to Workout Buddy!", fg="blue", bg="#f5f5dc", font=("Arial", 25))
+myLabel1 = Label(root, text="Welcome to", fg="blue", bg="#f5f5dc", font=("Arial", 25))
+myLabel2 = Label(root, text="Workout Buddy!", fg="blue", bg="#f5f5dc", font=("Arial", 25))
+
 #myLabel2 = Label(root, text="User!")
 #bg does not work
-myButton1 = Button(root, text="User 1", fg="blue", bg="#f5f5dc", command=myClick)
-myButton2 = Button(root, text="User 1", padx=5, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
-myButton3 = Button(root, text="User 1", padx=5, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
+myButton1 = Button(root, text="Add User", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
+myButton2 = Button(root, text="Add User", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
+myButton3 = Button(root, text="Add User", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
 
 myLabel1.grid(row=0, column=0)
-#myLabel2.grid(row=1, column=0)
+myLabel2.grid(row=0, column=1)
 myButton1.grid(row=1, column=0)
 myButton2.grid(row=1, column=1)
 myButton3.grid(row=1, column=2)
 
-e.grid(row=3, column=1)
-e.get
+
+# e.grid(row=3, column=1)
+# What does this do again?
+# e.get
 
 
 # myLabel.pack()
-root.geometry("600x600")
+root.geometry("700x700")
 root.mainloop()

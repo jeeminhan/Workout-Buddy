@@ -5,28 +5,42 @@ mp_drawing_styles = mp.solutions.drawing_styles
 mp_pose = mp.solutions.pose
 
 #count = 0
-position = None
-
+push_up_pos = None
+squat_pos = None
 def push_up(imlist):
-    global position
+    global push_up_pos
+
+    height = 0
+    depth = 0
+    wrist_pos = 0
+    
+
+    wrist_pos = ((imlist[16][1] - imlist[12][1]) + (imlist[15][1] - imlist[11][1]))/2
+    print("Wrist pos: " + wrist_pos)
+
     if(imlist[12][2] >= imlist[14][2] and imlist[11][2] >= imlist[13][2]):
-        position="down"
-    if(imlist[12][2] <= imlist[14][2] and imlist[11][2] <= imlist[13][2]) and position=="down":
-        position = "up"
+        push_up_pos="down"
+    if(imlist[12][2] <= imlist[14][2] and imlist[11][2] <= imlist[13][2]) and push_up_pos=="down":
+        
+        
+
+        push_up_pos = "up"
         return True
+
+
     return False 
 
 
-'''
+
 def squats(imlist):
-    global position
+    global squat_pos
     if(imlist[24][2] <= imlist[26][2] and imlist[23][2] <= imlist[25][2]):
-        position ="down"
-    if(imlist[24][2] >= imlist[26][2] and imlist[23][2] >= imlist[25][2]) and position=="down":
-        position = "up"
+        squat_pos ="down"
+    if(imlist[24][2] >= imlist[26][2] and imlist[23][2] >= imlist[25][2]) and squat_pos=="down":
+        squat_pos = "up"
         return True
     return False
-'''
+
 
 # For webcam input:
 def workout():
@@ -71,17 +85,18 @@ def workout():
                 past_pose = pose
                 if(past_pose != pose):
                     count = 0
-                    position=None
 
                 if len(imlist) != 0:
+
                     if push_up(imlist):
                         poses = 'Push-ups: '
                         count+=1
                         print(count)
-                   ''' if squats(imlist):
+
+                    if squats(imlist):
                         poses = 'Squats: '
                         count+=1
-                        print(count)'''
+                        print(count)
 
             # Flip the image horizontally for a selfie-view display.
             image=cv2.flip(image,1)

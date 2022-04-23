@@ -1,4 +1,7 @@
 TODO - Add functionality to check that camera is right angle 
+TODO - Default user
+TODO - Add ding sound for each pushup done
+TODO - Change angle of camera
 
 
 

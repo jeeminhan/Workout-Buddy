@@ -21,3 +21,5 @@ Might try to implement criteria for a side view of pushup such as "depth" and "s
 =======
 - Difference in shoulder height (shoulders being uneven)
 >>>>>>> Stashed changes
+
+changed from measuring centering by nose to comparing elbow and shoulder distance

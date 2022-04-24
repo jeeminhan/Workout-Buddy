@@ -129,7 +129,7 @@ def workout():
 
                 if len(imlist) != 0:
                     #print(imlist[15][1])
-                    #print((imlist[12][1] - (imlist[12][1] -  imlist[11][1])/2) - imlist[0][1])
+                    print((imlist[12][1] - (imlist[12][1] -  imlist[11][1])/2) - imlist[0][1])
                     if count == 1:
                         max_pos = (imlist[16][2]-imlist[12][2]) + (imlist[15][2]-imlist[11][2])/2
                     #print("starting position: ", starting_pos)q

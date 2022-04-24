@@ -1,43 +1,9 @@
-# from tkinter import *
-
-# # --- functions ---
-
-# def create_frame(master):
-#     print("create frame")
-
-#     frame = Frame(master)
-
-#     b = Button(frame, text='Do Something')
-#     b.pack(pady=10)
-#     myLabel1 = Label(frame, text="Welcome to", fg="blue", bg="#f5f5dc", font=("Arial", 25))
-#     myLabel1.pack()
-
-#     clearall = Button(frame, text='reset', command=reset_all)
-#     clearall.pack(pady=10)
-
-#     return frame
-
-# def reset_all():
-#     global frame
-
-#     frame.destroy()
-#     frame = create_frame(master)
-#     #frame = create_different_frame(master)
-#     frame.pack()
-
-# # --- main ---
-
-
-# master = Tk()
-
-# frame = create_frame(master)
-# frame.pack()
-
-# mainloop()
-
 #Import the required libraries
 from tkinter import *
 import csv, random
+import time
+
+
 
 def workingOutSkeleton():
     random.seed()
@@ -79,23 +45,24 @@ def workoutFrame(root, userNum):
         for widgets in frame.winfo_children():
             widgets.destroy()
         
-        userInfoFrame(root)
-    filename = "data.csv"
+        userInfoFrame(root, userNum)
+    filename = "CSV_Files/users.csv"
     def saveWorkout():
         with open(filename, 'w') as csvfile: 
         # creating a csv writer object 
             csvwriter = csv.writer(csvfile) 
         
             if userNum==1:
-                user1Pushups.append(pushupsDone)
-                csvwriter.writerow(user1Pushups)
+                # user1PushupsList.append(pushupsDone)
+                # csvwriter.writerow(user1PushupsList)
+                pass
 
             elif userNum==2:
-                user2Pushups.append(pushupsDone)
-                csvwriter.writerow(user2Pushups)
+                user2PushupsList.append(pushupsDone)
+                csvwriter.writerow(user2PushupsList)
             elif userNum==3:
-                user2Pushups.append(pushupsDone)
-                csvwriter.writerow(user3Pushups)
+                user2PushupsList.append(pushupsDone)
+                csvwriter.writerow(user3PushupsList)
 
     pushupsDone = workingOutSkeleton()
 
@@ -106,7 +73,50 @@ def workoutFrame(root, userNum):
     myButton2 = Button(frame, text="Done", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
     myButton2.grid(row=2, column=0)
 
+def viewStatsFrame(root, userNum):
+    pushUpList = []
+    options = []
+    frame = Frame(root)
+    frame.grid(row=1, column=2)
+
+    def myClick():
+        for widgets in frame.winfo_children():
+            widgets.destroy()
+        userInfoFrame(root, userNum)
+
+    def show():
+        optionChosen = options.index(clicked.get())
+        workoutInfo = pushUpList[optionChosen]
+        myLabel2 = Label(frame, text=workoutInfo, fg="blue", bg="#f5f5dc")
+        myLabel2.grid(row=3, column=0)
+
+    
+    if userNum==1:
+        pushUpList = user1PushupsList
+    elif userNum==2:
+        pushUpList = user2PushupsList
+    elif userNum==3:
+        pushUpList = user3PushupsList
+    print(pushUpList)
+    for row in pushUpList:
+        options.append(row[0])
+      
+    clicked = StringVar()
+
+    myLabel1 = Label(frame, text="Your workout will now begin", fg="blue", bg="#f5f5dc")
+    myLabel1.grid(row=0, column=0)
+
+    drop = OptionMenu(root, clicked, *options)
+    drop.grid(row=1, column=1)
+
+    myButton1 = Button(frame, text="Choose Date", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=show)
+    myButton1.grid(row=1, column=2)
+
+    myButton2 = Button(frame, text="Done", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
+    myButton2.grid(row=2, column=0)
+
 def userInfoFrame(root, userNum):
+    print("this function was reached")
     # TODO show workout stats on this page
     frame = Frame(root)
     frame.grid(row=1, column=2)
@@ -114,14 +124,15 @@ def userInfoFrame(root, userNum):
     currentUser = ""
     pushupsDone = 0
     if userNum==1:
-        currentUser = user1
-        pushupsDone = sum(user1Pushups)
+        # currentUser = user1
+        # pushupsDone = sum(user1PushupsList)
+        pass
     elif userNum==2:
         currentUser = user2
-        pushupsDone = sum(user2Pushups)
+        pushupsDone = sum(user2PushupsList)
     elif userNum==3:
         currentUser = user3
-        pushupsDone = sum(user3Pushups)
+        pushupsDone = sum(user3PushupsList)
 
     def myClick():
         for widgets in frame.winfo_children():
@@ -132,6 +143,11 @@ def userInfoFrame(root, userNum):
         for widgets in frame.winfo_children():
             widgets.destroy()
         workoutFrame(root, userNum)
+    
+    def viewStats():
+        for widgets in frame.winfo_children():
+            widgets.destroy()
+        viewStatsFrame(root, userNum)
 
 
 
@@ -141,8 +157,10 @@ def userInfoFrame(root, userNum):
     myLabel2.grid(row=1, column=0)
     myButton1 = Button(frame, text="Start workout" , padx=20, pady=15, fg="blue", bg="#f5f5dc", command=workout)
     myButton1.grid(row=2, column=0)
-    myButton1 = Button(frame, text="Done", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
+    myButton1 = Button(frame, text="View Stats" , padx=20, pady=15, fg="blue", bg="#f5f5dc", command=viewStats)
     myButton1.grid(row=3, column=0)
+    myButton1 = Button(frame, text="Done", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
+    myButton1.grid(row=4, column=0)
 
 def createUserFrame(root, userNum):
     #Create a frame
@@ -247,32 +265,61 @@ def mainFrame(root):
 user1 = "Add User"
 user2 = "Add User"
 user3 = "Add User"
-user1Pushups = 0
-user2Pushups = 0
-user3Pushups = 0
+user1PushupsList = []
+user2PushupsList = []
+user3PushupsList = []
 users = []
-with open('data.csv', 'r') as file:
-    data = csv.reader(file)
-    i=0
-    for row in data:
-        if i==0:
-            users = row
-        elif i==1:
-            user1Pushups = [int(x) for x in row]
-        elif i==2:
-            user2Pushups = [int(x) for x in row]
-        elif i==3:
-            user3Pushups = [int(x) for x in row]
-        i+=1
 
-# print(user1Pushups, user2Pushups, user3Pushups) 
+with open('CSV_Files/users.csv', 'r') as file:
+    data = csv.reader(file)
+    
+    for row in data:
+        users = row
+
+with open('CSV_Files/user1Pushups.csv', 'r') as file:
+    data = csv.reader(file)
+    for row in data:
+        user1PushupsList.append(row)
+print(user1PushupsList)
+        
+
+# with open('CSV_Files/user1Pushups.csv', 'r') as file:
+#     data = csv.reader(file)
+#     i=0
+#     for row in data:
+#         if i==0:
+#             users = row
+#         elif i==1:
+#             user1PushupsList = [int(x) for x in row]
+#         elif i==2:
+#             user2PushupsList = [int(x) for x in row]
+#         elif i==3:
+#             user3PushupsList = [int(x) for x in row]
+#         i+=1
+
+# with open('CSV_Files/user1Pushups.csv', 'r') as file:
+#     data = csv.reader(file)
+#     i=0
+#     for row in data:
+#         if i==0:
+#             users = row
+#         elif i==1:
+#             user1PushupsList = [int(x) for x in row]
+#         elif i==2:
+#             user2PushupsList = [int(x) for x in row]
+#         elif i==3:
+#             user3PushupsList = [int(x) for x in row]
+#         i+=1
+
+# print(user1PushupsList, user2PushupsList, user3PushupsList) 
 
 workingOut = workingOutSkeleton()
 print(workingOut)
 
-user1 = users[0]
-user2 = users[1]
-user3 = users[2]
+if users:
+    user1 = users[0]
+    user2 = users[1]
+    user3 = users[2]
 
 root= Tk()
 frame = mainFrame(root)

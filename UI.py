@@ -54,6 +54,12 @@ def deleteUser(root):
     doneButton.grid(row=2, column=0)
     
 def workoutFrame(root, userNum):
+    global optionWorkout
+    global finalTimeVar 
+    global repsVar
+    global totalScoreVar 
+    global paramListVar 
+    optionWorkout = 0
     #Create a frame
     # buttonPress = 0
     frame = Frame(root)
@@ -62,7 +68,6 @@ def workoutFrame(root, userNum):
     def myClick():
         for widgets in frame.winfo_children():
             widgets.destroy()
-        
         userInfoFrame(root, userNum)
     def saveWorkout(reps, totalScore, parameterList, timeObj=datetime.now()):
     
@@ -71,33 +76,32 @@ def workoutFrame(root, userNum):
         # Convert datetime object to string in specific format 
         curr_time_str = timeObj.strftime('%m-%d-%Y %H:%M')
         fileName = ""
-        print(optionWorkout)
-        if userNum==1:
-            fileName = "CSV_Files/user1Pushups.csv"         
-        elif userNum==2:
-            fileName = "CSV_Files/user2Pushups.csv" 
-        elif userNum==3:
-            fileName = "CSV_Files/user3Pushups.csv" 
-        with open(fileName, 'a') as csvfile: 
-        # creating a csv writer object 
-            # for x in parameterList:
-            #     tempString = ""
-            #     i=0
-            #     for parameter in x:
-            #         if i==0:
-            #             tempString = str(parameter) + " "
-            #         elif i==3:
-            #             tempString = tempString + str(parameter)
-            #         else:
-            #             tempString = tempString + str(parameter) + " "
-            #         i+=1
-            #     if parameterString == "":
-            #         parameterString = tempString
-            #     else:
-            #         parameterString = parameterString + ',' + tempString
-            dateRepCommentList = [curr_time_str, reps, totalScore, parameterList]
-            csvWriter = csv.writer(csvfile) 
-            csvWriter.writerow(dateRepCommentList)
+        if optionWorkout == 1:
+            if userNum==1:
+                fileName = "CSV_Files/user1Pushups.csv"         
+            elif userNum==2:
+                fileName = "CSV_Files/user2Pushups.csv" 
+            elif userNum==3:
+                fileName = "CSV_Files/user3Pushups.csv" 
+            with open(fileName, 'a') as csvfile: 
+                dateRepCommentList = [curr_time_str, reps, totalScore, parameterList]
+                csvWriter = csv.writer(csvfile) 
+                csvWriter.writerow(dateRepCommentList)
+        elif optionWorkout == 2:
+            if userNum==1:
+                fileName = "CSV_Files/user1Squats.csv"         
+            elif userNum==2:
+                fileName = "CSV_Files/user2Squats.csv" 
+            elif userNum==3:
+                fileName = "CSV_Files/user3Squats.csv" 
+            with open(fileName, 'a') as csvfile: 
+                dateRepCommentList = [curr_time_str, reps, totalScore, parameterList]
+                csvWriter = csv.writer(csvfile) 
+                csvWriter.writerow(dateRepCommentList)
+        myButton3.destroy()
+        time.sleep(0.25)
+        userInfoFrame(root, userNum)
+
     # finalTimeVar, repsVar, totalScoreVar, paramListVar = workingOutSkeleton()
 
     myLabel1 = Label(frame, text="Choose Push-up or Squats", fg="blue", bg="#f5f5dc")
@@ -122,18 +126,29 @@ def workoutFrame(root, userNum):
     #         workout_bud.workout(2)
     #     else:
     #         print("Please select radio button")
-    finalTimeVar, repsVar, totalScoreVar, paramListVar = ""
-    optionWorkout
+    
+    
     def startPushups():
         global optionWorkout
+        optionWorkout = 1
         global finalTimeVar, repsVar, totalScoreVar, paramListVar
         finalTimeVar, repsVar, totalScoreVar, paramListVar = workingOutSkeleton()
+        myButton1.destroy()
+        myButton2.destroy()
+        myButton4.destroy()
+
+
 
         # finalTimeVar, repsVar, totalScoreVar, paramListVar = workout_bud.workout(1)
     def startSquats():
         global optionWorkout
+        optionWorkout = 2
         global finalTimeVar, repsVar, totalScoreVar, paramListVar
         finalTimeVar, repsVar, totalScoreVar, paramListVar = workingOutSkeleton()
+        myButton1.destroy()
+        myButton2.destroy()
+        myButton4.destroy()
+
         # finalTimeVar, repsVar, totalScoreVar, paramListVar = workout_bud.workout(2)   
 
     # RB1 = Radiobutton(frame, text="Push-Ups", variable=r, value=1, command=lambda: radioButtonPress(r.get()))
@@ -144,11 +159,11 @@ def workoutFrame(root, userNum):
     myButton1.grid(row=1, column=0)
     myButton2 = Button(frame, text="Start Squats", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=startSquats)
     myButton2.grid(row=1, column=1)
-    myButton3 = Button(frame, text="Save Workout (This will end your workout session)", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=lambda:saveWorkout(repsVar, totalScoreVar, paramListVar, finalTimeVar))
+    myButton3 = Button(frame, text="Save Workout (This will end your workout session)", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=lambda:saveWorkout(repsVar, totalScoreVar, paramListVar))
     myButton3.grid(row=3, column=0)
     myButton4 = Button(frame, text="Done", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
     myButton4.grid(row=4, column=0)
-
+    
 def showStats(root, userNum, dateRow):
     frame = Frame(root)
     # WHAT DOES THIS DO?
@@ -283,19 +298,22 @@ def userInfoFrame(root, userNum):
     pushupsDone = 0
     if userNum==1:
         currentUser = user1
-        for i in range(len(user1PushupsList)):
-            pushupsDone += int(user1PushupsList[i][1])
+        if user1PushupsList[0] != '':
+            for i in range(len(user1PushupsList)):
+                pushupsDone += int(user1PushupsList[i][1])
         
         
     elif userNum==2:
         currentUser = user2
-        for i in range(len(user2PushupsList)):
-            pushupsDone += int(user2PushupsList[i][1])
+        if user1PushupsList[0] != '':
+            for i in range(len(user2PushupsList)):
+                pushupsDone += int(user2PushupsList[i][1])
         
     elif userNum==3:
         currentUser = user3
-        for i in range(len(user3PushupsList)):
-            pushupsDone += int(user3PushupsList[i][1])
+        if user1PushupsList[0] != '':
+            for i in range(len(user3PushupsList)):
+                pushupsDone += int(user3PushupsList[i][1])
         
 
     def myClick():
@@ -483,7 +501,7 @@ with open('CSV_Files/user3Pushups.csv', 'r') as file:
 
 
 workingOut = workingOutSkeleton()
-
+optionWorkout = 0
 if users:
     user1 = users[0]
     user2 = users[1]

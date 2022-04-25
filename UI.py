@@ -64,7 +64,6 @@ def workoutFrame(root, userNum):
             widgets.destroy()
         
         userInfoFrame(root, userNum)
-    filename = "CSV_Files/users.csv"
     def saveWorkout(reps, totalScore, parameterList, timeObj=datetime.now()):
     
         parameterString = ""
@@ -72,6 +71,7 @@ def workoutFrame(root, userNum):
         # Convert datetime object to string in specific format 
         curr_time_str = timeObj.strftime('%m-%d-%Y %H:%M')
         fileName = ""
+        print(optionWorkout)
         if userNum==1:
             fileName = "CSV_Files/user1Pushups.csv"         
         elif userNum==2:
@@ -98,7 +98,7 @@ def workoutFrame(root, userNum):
             dateRepCommentList = [curr_time_str, reps, totalScore, parameterList]
             csvWriter = csv.writer(csvfile) 
             csvWriter.writerow(dateRepCommentList)
-    finalTimeVar, repsVar, totalScoreVar, paramListVar = workingOutSkeleton()
+    # finalTimeVar, repsVar, totalScoreVar, paramListVar = workingOutSkeleton()
 
     myLabel1 = Label(frame, text="Choose Push-up or Squats", fg="blue", bg="#f5f5dc")
     myLabel1.grid(row=0, column=0)
@@ -122,10 +122,19 @@ def workoutFrame(root, userNum):
     #         workout_bud.workout(2)
     #     else:
     #         print("Please select radio button")
+    finalTimeVar, repsVar, totalScoreVar, paramListVar = ""
+    optionWorkout
     def startPushups():
-        workout_bud.workout(1)
+        global optionWorkout
+        global finalTimeVar, repsVar, totalScoreVar, paramListVar
+        finalTimeVar, repsVar, totalScoreVar, paramListVar = workingOutSkeleton()
+
+        # finalTimeVar, repsVar, totalScoreVar, paramListVar = workout_bud.workout(1)
     def startSquats():
-        workout_bud.workout(2)   
+        global optionWorkout
+        global finalTimeVar, repsVar, totalScoreVar, paramListVar
+        finalTimeVar, repsVar, totalScoreVar, paramListVar = workingOutSkeleton()
+        # finalTimeVar, repsVar, totalScoreVar, paramListVar = workout_bud.workout(2)   
 
     # RB1 = Radiobutton(frame, text="Push-Ups", variable=r, value=1, command=lambda: radioButtonPress(r.get()))
     # RB1.grid(row=1, column=0)

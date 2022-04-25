@@ -6,6 +6,7 @@ TODO - Keep track of rep and form rating/comment
 TODO - Making an interface to show the pushup rating, rep and commen, each workout can be saved on a line
 TODO - For viewing workouts just make a simple list of all the previous workouts
 TODO - Have an average rating and a graph
+TODO - What does this do? (frame.grid(row=1, column=2))
 
 
 
@@ -15,11 +16,15 @@ Notes - Parameters for determining if a push-up is valid
 - Hips being too high
 - Arms being too wide
 - Angle of elbow being around 45 degrees
-<<<<<<< Updated upstream
-
-Might try to implement criteria for a side view of pushup such as "depth" and "straight back"
-=======
+- Might try to implement criteria for a side view of pushup such as "depth" and "straight back"
 - Difference in shoulder height (shoulders being uneven)
+- changed from measuring centering by nose to comparing elbow and shoulder distance
+
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
 
 changed from measuring centering by nose to comparing elbow and shoulder distance
+=======
+
+
+>>>>>>> Stashed changes

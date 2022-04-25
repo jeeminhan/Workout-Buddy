@@ -91,10 +91,10 @@ def push_up(imlist):
             
         push_up_pos = "up"
         
-        return True
+        #return True
 
 
-    return False 
+    return  
 
 
 
@@ -133,13 +133,13 @@ def squats(imlist):
     if(imlist[24][2] <= imlist[26][2] and imlist[23][2] <= imlist[25][2]) and squat_pos=="down":
         squat_pos = "up"
         #print("hello")
-        return True
+        #return True
     
-    return False
+    return 
 
 
 # For webcam input:
-def workout():
+def workout(exercise_option):
     global max_pos
     count = 0
     #position = None
@@ -186,12 +186,14 @@ def workout():
                         max_pos = (imlist[16][2]-imlist[12][2]) + (imlist[15][2]-imlist[11][2])/2
                     #print("starting position: ", starting_pos)q
                     #print(imlist[16][2])
-                    '''if push_up(imlist):
+                    if exercise_option == 1:
+                        push_up(imlist)
                         poses = 'Push-ups: '
                         count+=1
-                        print(count)'''
+                        print(count)
 
-                    if squats(imlist):
+                    elif exercise_option == 2:
+                        squats(imlist)
                         poses = 'Squats: '
                         count+=1
                         print(count)

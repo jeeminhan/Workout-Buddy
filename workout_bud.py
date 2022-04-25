@@ -217,4 +217,4 @@ def workout(exercise_option):
     cap.release()
     return
 
-workout()
+#workout()

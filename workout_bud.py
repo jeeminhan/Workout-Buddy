@@ -61,20 +61,18 @@ def push_up(imlist):
                 elbow_rating -= (elbow_rating/1.62 - 1) * 426
 
             #Creating the rating for the centering of the head and equal distance between hands
-            center = abs(abs(imlist[14][1] - imlist [12][1]) - abs(imlist[11][1] - imlist[13][1]))
+            center = abs(imlist[14][1] - imlist [12][1])/abs(imlist[11][1] - imlist[13][1])
             #dist = abs(center-imlist[0][1])
-            #print("Center", center)
-            if(center > 35):
-                center_rating -= (center/35 - 1) * 53
-                print("Make sure you push equally with both sides")
+            if(center > 1.5):
+                center_rating -= (center/1.5 - 1) * 150
+            elif(back < 0.5):
+                center_rating -= (1-center/0.5) * 150
 
         else:
             if(right_side):
-                back = imlist[12][2] - imlist[24][2]
+                back = imlist[12][2]-imlist[24][2]
             else:
-                back = imlist[11][2] - imlist[23][2]
-            if(back > 10):
-                back_rating -= 10
+                back = imlist[11][2]-imlist[23][2]
 
     #up position of pushup
     if(imlist[12][2] <= imlist[14][2] and imlist[11][2] <= imlist[13][2]) and push_up_pos=="down": 
@@ -105,22 +103,33 @@ def squats(imlist):
 
     back = 0
 
+    center = 0
+    center_rating = 100
+
     feet = 0
     feet_rating = 100
 
     knees = 0
 
-    if(imlist[24][2] <= imlist[26][2] and imlist[23][2] <= imlist[25][2]):
+    side_view = True
+    right_view = False
+
+    if(imlist[24][2] >= imlist[26][2] and imlist[23][2] >= imlist[25][2]):
         squat_pos ="down"
 
-        feet = ((imlist[12][1] - imlist[28][1]) + (imlist[11][1]- imlist[27][1]))/2
-        print("feet")
-        if(abs(feet) > 10):
-            feet_rating = 10
+        # feet = ((imlist[12][1] - imlist[28][1]) + (imlist[11][1]- imlist[27][1]))/2
+        # print("feet: ", feet)
+        # if(abs(feet) > 5):
+        #     feet_rating = 10
+        #back_angle = arctan()
+        center = imlist[11][1] - (imlist[29][1] - (imlist[29][1] - imlist[31][1])/2)
+        print("Center: ", center)
+        if(center > 1.5):
+            center_rating -= 10
 
-    if(imlist[24][2] >= imlist[26][2] and imlist[23][2] >= imlist[25][2]) and squat_pos=="down":
+    if(imlist[24][2] <= imlist[26][2] and imlist[23][2] <= imlist[25][2]) and squat_pos=="down":
         squat_pos = "up"
-        
+        #print("hello")
         return True
     
     return False
@@ -174,15 +183,15 @@ def workout():
                         max_pos = (imlist[16][2]-imlist[12][2]) + (imlist[15][2]-imlist[11][2])/2
                     #print("starting position: ", starting_pos)q
                     #print(imlist[16][2])
-                    '''if push_up(imlist):
+                    if push_up(imlist):
                         poses = 'Push-ups: '
                         count+=1
-                        print(count)'''
+                        print(count)
 
-                    if squats(imlist):
+                    '''if squats(imlist):
                         poses = 'Squats: '
                         count+=1
-                        print(count)
+                        print(count)'''
 
             # Flip the image horizontally for a selfie-view display.
             image=cv2.flip(image,1)

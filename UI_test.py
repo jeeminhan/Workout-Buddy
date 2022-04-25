@@ -2,14 +2,32 @@
 from tkinter import *
 import csv, random
 import time
+from datetime import datetime
+from datetime import timedelta
+import ast
 
+from pytest import param
 
 
 def workingOutSkeleton():
     random.seed()
-    num = random.randint(1,50)
-    return num
-#Create an instance of tkinter frame
+    randomDay = random.randint(1,1000)
+    randomHour = random.randint(1,500)
+    randomMin = random.randint(1,500)
+    currentTime = datetime.now()
+    finalTime = currentTime - timedelta(days=randomDay, hours=randomHour, minutes=randomMin)
+    # finalTimeStr = finalTime.strftime('%m-%d-%Y %H:%M')
+    pushUpRep = random.randint(10,30)
+    rating = random.uniform(50.1, 98.7)
+
+    parameterList = []
+    for i in range(pushUpRep):
+        row = []
+        for j in range(4):
+            row.append(random.randint(1,100))
+        parameterList.append(row)
+    rating = "{rating:.2f}".format(rating=rating)
+    return finalTime, pushUpRep, float(rating), parameterList
 
 
 def deleteUser(root):
@@ -33,7 +51,7 @@ def deleteUser(root):
     myButton2.grid(row=1, column=1)
     myButton3.grid(row=1, column=2)
 
-    doneButton = Button(frame, text="Done", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
+    doneButton = Button(frame, text="Back", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
     doneButton.grid(row=2, column=0)
     
 def workoutFrame(root, userNum):
@@ -47,31 +65,119 @@ def workoutFrame(root, userNum):
         
         userInfoFrame(root, userNum)
     filename = "CSV_Files/users.csv"
-    def saveWorkout():
-        with open(filename, 'w') as csvfile: 
+    def saveWorkout(reps, totalScore, parameterList, timeObj=datetime.now()):
+    
+        parameterString = ""
+        #current_time = datetime.now()
+        # Convert datetime object to string in specific format 
+        curr_time_str = timeObj.strftime('%m-%d-%Y %H:%M')
+        fileName = ""
+        if userNum==1:
+            fileName = "CSV_Files/user1Pushups.csv"         
+        elif userNum==2:
+            fileName = "CSV_Files/user2Pushups.csv" 
+        elif userNum==3:
+            fileName = "CSV_Files/user3Pushups.csv" 
+        with open(fileName, 'a') as csvfile: 
         # creating a csv writer object 
-            csvwriter = csv.writer(csvfile) 
-        
-            if userNum==1:
-                # user1PushupsList.append(pushupsDone)
-                # csvwriter.writerow(user1PushupsList)
-                pass
-
-            elif userNum==2:
-                user2PushupsList.append(pushupsDone)
-                csvwriter.writerow(user2PushupsList)
-            elif userNum==3:
-                user2PushupsList.append(pushupsDone)
-                csvwriter.writerow(user3PushupsList)
-
-    pushupsDone = workingOutSkeleton()
+            # for x in parameterList:
+            #     tempString = ""
+            #     i=0
+            #     for parameter in x:
+            #         if i==0:
+            #             tempString = str(parameter) + " "
+            #         elif i==3:
+            #             tempString = tempString + str(parameter)
+            #         else:
+            #             tempString = tempString + str(parameter) + " "
+            #         i+=1
+            #     if parameterString == "":
+            #         parameterString = tempString
+            #     else:
+            #         parameterString = parameterString + ',' + tempString
+            dateRepCommentList = [curr_time_str, reps, totalScore, parameterList]
+            csvWriter = csv.writer(csvfile) 
+            csvWriter.writerow(dateRepCommentList)
+    finalTimeVar, repsVar, totalScoreVar, paramListVar = workingOutSkeleton()
 
     myLabel1 = Label(frame, text="Your workout will now begin", fg="blue", bg="#f5f5dc")
     myLabel1.grid(row=0, column=0)
-    myButton2 = Button(frame, text="Save Workout (This will end your workout session)", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=saveWorkout)
+    myButton2 = Button(frame, text="Save Workout (This will end your workout session)", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=lambda:saveWorkout(repsVar, totalScoreVar, paramListVar, finalTimeVar))
     myButton2.grid(row=1, column=0)
     myButton2 = Button(frame, text="Done", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
     myButton2.grid(row=2, column=0)
+
+def showStats(root, userNum, dateRow):
+    frame = Frame(root)
+    # WHAT DOES THIS DO?
+    frame.grid(row=1, column=2)
+
+    pushUpRep = []
+    pushUpList = []
+    parameter1 = []
+    parameter2 = []
+    parameter3 = []
+    parameter4 = []
+    avgScore = []
+
+
+
+    
+    def myClick():
+        for widgets in frame.winfo_children():
+            widgets.destroy()
+        userInfoFrame(root, userNum)
+
+    if userNum==1:
+        pushUpList = user1PushupsList
+    elif userNum==2:
+        pushUpList = user2PushupsList
+    elif userNum==3:
+        pushUpList = user3PushupsList
+    # Getting the specific row
+    pushUpList = pushUpList[int(dateRow)][3]
+    pushUpList = ast.literal_eval(pushUpList)
+    print(pushUpList)
+
+    for i in range(len(pushUpList)):
+        pushUpRep.append(i+1)
+        # if i%2:
+        #     if i!=1:
+        #         percentScore.append(pushUpList[i])
+        # else:
+        #     if i!= 0:
+        #         comments.append(pushUpList[i])
+        parameter1.append(pushUpList[i][0])
+        parameter2.append(pushUpList[i][1])
+        parameter3.append(pushUpList[i][2])
+        parameter4.append(pushUpList[i][3])
+        avg = ((pushUpList[i][0]+pushUpList[i][1]+pushUpList[i][2]+pushUpList[i][3])/4)
+        avg = "{avg:.2f}".format(avg=avg)
+        avgScore.append(avg)
+
+
+        
+    myButton2 = Button(frame, text="Back", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
+    myButton2.grid(row=1, column=0)
+    test = Text(frame, width=60, height=15)
+    test.grid(row=0, column=0, padx=10, pady=10, sticky='nsew')
+    #ADDING A SCROLLBAR
+    # myscrollbar=Scrollbar(frame, orient="vertical")
+    # myscrollbar.grid(row=2, column = 0,fill="y")
+
+    test.delete(1.0,END)   # Delete text from widget if there is any
+    test.insert(END,'Rep:   Avg Score:    P1   P2    P3    P4:\n')
+    for index in range(len(pushUpRep)):
+        col1 = '{:<8}'.format(pushUpRep[index])
+        col2 = '{:<8}'.format(avgScore[index])
+        col3 = '{:<5}'.format(parameter1[index])
+        col4 = '{:<5}'.format(parameter2[index])
+        col5 = '{:<5}'.format(parameter3[index])
+        col6 = '{:<5}'.format(parameter4[index])
+        line = col1 + col2 + col3 + col4 + col5 + col6+ '\n'
+        test.insert(END,line)
+
+    
 
 def viewStatsFrame(root, userNum):
     pushUpList = []
@@ -85,10 +191,15 @@ def viewStatsFrame(root, userNum):
         userInfoFrame(root, userNum)
 
     def show():
-        optionChosen = options.index(clicked.get())
-        workoutInfo = pushUpList[optionChosen]
-        myLabel2 = Label(frame, text=workoutInfo, fg="blue", bg="#f5f5dc")
-        myLabel2.grid(row=3, column=0)
+        optionChosenNum = options.index(clicked.get())
+        # workoutInfo = pushUpList[optionChosen]
+
+
+        # myLabel2 = Label(frame, text=workoutInfo, fg="blue", bg="#f5f5dc")
+        # myLabel2.grid(row=3, column=0)
+        for widgets in frame.winfo_children():
+            widgets.destroy()
+        showStats(root, userNum, optionChosenNum)
 
     
     if userNum==1:
@@ -97,26 +208,33 @@ def viewStatsFrame(root, userNum):
         pushUpList = user2PushupsList
     elif userNum==3:
         pushUpList = user3PushupsList
-    print(pushUpList)
     for row in pushUpList:
         options.append(row[0])
-      
+    # print(options)
     clicked = StringVar()
 
-    myLabel1 = Label(frame, text="Your workout will now begin", fg="blue", bg="#f5f5dc")
+    myLabel1 = Label(frame, text="Stats Menu", fg="blue", bg="#f5f5dc")
     myLabel1.grid(row=0, column=0)
 
-    drop = OptionMenu(root, clicked, *options)
-    drop.grid(row=1, column=1)
+    drop = OptionMenu(frame, clicked, *options)
+    drop.grid(row=1, column=0)
 
     myButton1 = Button(frame, text="Choose Date", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=show)
-    myButton1.grid(row=1, column=2)
+    myButton1.grid(row=2, column=0)
 
-    myButton2 = Button(frame, text="Done", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
-    myButton2.grid(row=2, column=0)
+    myButton2 = Button(frame, text="Back", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
+    myButton2.grid(row=3, column=0)
+
+    # myLabel2 = Label(frame, text="")
+    # myLabel2.grid(row=0, column=0)
+    # myLabel3 = Label(frame, text="")
+    # myLabel3.grid(row=1, column=0)
+    # myLabel4 = Label(frame, text="")
+    # myLabel4.grid(row=2, column=0)
+    # myLabel5 = Label(frame, text="")
+    # myLabel5.grid(row=3, column=0)
 
 def userInfoFrame(root, userNum):
-    print("this function was reached")
     # TODO show workout stats on this page
     frame = Frame(root)
     frame.grid(row=1, column=2)
@@ -124,15 +242,22 @@ def userInfoFrame(root, userNum):
     currentUser = ""
     pushupsDone = 0
     if userNum==1:
-        # currentUser = user1
-        # pushupsDone = sum(user1PushupsList)
-        pass
+        currentUser = user1
+        for i in range(len(user1PushupsList)):
+            pushupsDone += int(user1PushupsList[i][1])
+        
+        
     elif userNum==2:
         currentUser = user2
-        pushupsDone = sum(user2PushupsList)
+        for i in range(len(user2PushupsList)):
+            pushupsDone += int(user2PushupsList[i][1])
+        
     elif userNum==3:
         currentUser = user3
-        pushupsDone = sum(user3PushupsList)
+        for i in range(len(user3PushupsList)):
+            pushupsDone += int(user3PushupsList[i][1])
+            print(pushupsDone)
+        
 
     def myClick():
         for widgets in frame.winfo_children():
@@ -153,13 +278,13 @@ def userInfoFrame(root, userNum):
 
     myLabel1 = Label(frame, text="Welcome " + currentUser+ " you can view your workout stats or start a workout", fg="blue", bg="#f5f5dc")
     myLabel1.grid(row=0, column=0)
-    myLabel2 = Label(frame, text= "You've done " + str(pushupsDone) + " pushups", fg="blue", bg="#f5f5dc")
+    myLabel2 = Label(frame, text= "You've done " + str(pushupsDone) + " pushups total!", fg="blue", bg="#f5f5dc")
     myLabel2.grid(row=1, column=0)
     myButton1 = Button(frame, text="Start workout" , padx=20, pady=15, fg="blue", bg="#f5f5dc", command=workout)
     myButton1.grid(row=2, column=0)
     myButton1 = Button(frame, text="View Stats" , padx=20, pady=15, fg="blue", bg="#f5f5dc", command=viewStats)
     myButton1.grid(row=3, column=0)
-    myButton1 = Button(frame, text="Done", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
+    myButton1 = Button(frame, text="Back", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
     myButton1.grid(row=4, column=0)
 
 def createUserFrame(root, userNum):
@@ -203,7 +328,6 @@ def mainFrame(root):
         for widgets in frame.winfo_children():
             widgets.destroy()
         createUserFrame(root, userNum)
-        print(userNum)
 
     def userScreen(userNum):
         for widgets in frame.winfo_children():
@@ -280,7 +404,15 @@ with open('CSV_Files/user1Pushups.csv', 'r') as file:
     data = csv.reader(file)
     for row in data:
         user1PushupsList.append(row)
-print(user1PushupsList)
+with open('CSV_Files/user2Pushups.csv', 'r') as file:
+    data = csv.reader(file)
+    for row in data:
+        user2PushupsList.append(row)
+with open('CSV_Files/user3Pushups.csv', 'r') as file:
+    data = csv.reader(file)
+    for row in data:
+        user3PushupsList.append(row)
+print(user3PushupsList[0][1])
         
 
 # with open('CSV_Files/user1Pushups.csv', 'r') as file:
@@ -311,10 +443,8 @@ print(user1PushupsList)
 #             user3PushupsList = [int(x) for x in row]
 #         i+=1
 
-# print(user1PushupsList, user2PushupsList, user3PushupsList) 
 
 workingOut = workingOutSkeleton()
-print(workingOut)
 
 if users:
     user1 = users[0]
@@ -326,6 +456,6 @@ frame = mainFrame(root)
 
 
 #Set the geometry of frame
-root.geometry("600x250")
+root.geometry("600x300")
 
 root.mainloop()

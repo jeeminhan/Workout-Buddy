@@ -10,20 +10,25 @@ mp_pose = mp.solutions.pose
 push_up_pos = None
 squat_pos = None
 
+elbow_rating = 0
+center_rating = 0
 def push_up(imlist):
     global push_up_pos
-
+    #global elbow_rating
+    #global center_rating
+    elbow_rating = 100
+    center_rating = 100
     #measure the peak of your pushup
     peak = 0
     peak_rating = 100
 
     #measure the how wide the elbows sare
-    elbow_pos = 100
-    elbow_rating = 0
+    elbow_pos = 0
+    #elbow_rating = 100
 
     #measure how centered your pushup is
     center = 0
-    center_rating = 100
+    #center_rating = 100
 
     #measure how straight the back is
     back = 0
@@ -53,11 +58,10 @@ def push_up(imlist):
 
         #creating the judging criteria when given a front view of the pushup
         if not side_view:
-
             #Creating the rating for the elbows
             elbow_pos = (imlist[14][1] - imlist[13][1])/(imlist[12][1]-imlist[11][1])
             if(elbow_pos > 1.62):
-                print("Point your elbows backwards")
+                #print("Point your elbows backwards")
                 elbow_rating -= (elbow_rating/1.62 - 1) * 426
 
             #Creating the rating for the centering of the head and equal distance between hands
@@ -65,15 +69,21 @@ def push_up(imlist):
             #dist = abs(center-imlist[0][1])
             if(center > 1.5):
                 center_rating -= (center/1.5 - 1) * 150
-            elif(back < 0.5):
-                center_rating -= (1-center/0.5) * 150
+                #print("Center greater: ", center_rating)
 
+            elif(center < 0.5):
+                center_rating -= (1-center/0.5) * 150
+                #print("Center lesser: ", center_rating)
+        
         else:
             if(right_side):
                 back = imlist[12][2]-imlist[24][2]
             else:
                 back = imlist[11][2]-imlist[23][2]
 
+
+
+        #print("Elbow: ", elbow_rating, " Center: ", center_rating)
     #up position of pushup
     if(imlist[12][2] <= imlist[14][2] and imlist[11][2] <= imlist[13][2]) and push_up_pos=="down": 
         
@@ -82,19 +92,19 @@ def push_up(imlist):
         #         height = imlist[12][1] - imlist[14][1]
                 back = imlist[12][2] - imlist[24][2]
             else:
-        #         height = imlist[13][1] - imlist[11][1]
-        #     print("height: ", height)
+        #       height = imlist[13][1] - imlist[11][1]
+        #       print("height: ", height)
                 back = imlist[11][2] - imlist[23][2]
             if(back > 10):
                 back_rating -= 10
 
             
         push_up_pos = "up"
-        
-        return True
+
+        return True, -1, -1
 
 
-    return False
+    return False, elbow_rating, center_rating
 
 
 
@@ -140,7 +150,10 @@ def squats(imlist):
 
 # For webcam input:
 def workout(exercise_option):
+    #global elbow_rating
+    #global center_rating
     global max_pos
+    rep_rating = []
     count = 0
     #position = None
     poses = ''
@@ -187,7 +200,17 @@ def workout(exercise_option):
                     #print("starting position: ", starting_pos)q
                     #print(imlist[16][2])
                     if exercise_option == 1:
-                        if push_up(imlist):
+                        test, temp1, temp2 = push_up(imlist)
+                        if push_up_pos == '':
+                            elbow_rating = temp1
+                            center_rating = temp2
+                            print("Elbow: ", elbow_rating, " Center: ", center_rating)
+
+                        if test:
+                            #if(temp != -1)
+                            
+                            rep_rating.append([elbow_rating, center_rating, 0 ,0])
+                            avg_rating += elbow_rating + center_rating
                             poses = 'Push-ups: '
                             count+=1
                             print(count)
@@ -215,6 +238,10 @@ def workout(exercise_option):
                 break
         
     cap.release()
-    return
+    cv2.destroyAllWindows()
 
-#workout()
+    avg_rating = avg_rating/(count * 2)
+    
+    return count, avg_rating, rep_rating
+
+workout(1)

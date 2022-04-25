@@ -117,16 +117,19 @@ def squats(imlist):
     if(imlist[24][2] >= imlist[26][2] and imlist[23][2] >= imlist[25][2]):
         squat_pos ="down"
 
-        # feet = ((imlist[12][1] - imlist[28][1]) + (imlist[11][1]- imlist[27][1]))/2
+        feet = abs(imlist[31][2]-imlist[29][2])
         # print("feet: ", feet)
         # if(abs(feet) > 5):
         #     feet_rating = 10
         #back_angle = arctan()
+        if(feet > 1):
+            feet_rating -= 15
+
         center = imlist[11][1] - (imlist[29][1] - (imlist[29][1] - imlist[31][1])/2)
         print("Center: ", center)
         if(center > 1.5):
             center_rating -= 10
-
+            
     if(imlist[24][2] <= imlist[26][2] and imlist[23][2] <= imlist[25][2]) and squat_pos=="down":
         squat_pos = "up"
         #print("hello")
@@ -183,15 +186,15 @@ def workout():
                         max_pos = (imlist[16][2]-imlist[12][2]) + (imlist[15][2]-imlist[11][2])/2
                     #print("starting position: ", starting_pos)q
                     #print(imlist[16][2])
-                    if push_up(imlist):
+                    '''if push_up(imlist):
                         poses = 'Push-ups: '
                         count+=1
-                        print(count)
+                        print(count)'''
 
-                    '''if squats(imlist):
+                    if squats(imlist):
                         poses = 'Squats: '
                         count+=1
-                        print(count)'''
+                        print(count)
 
             # Flip the image horizontally for a selfie-view display.
             image=cv2.flip(image,1)

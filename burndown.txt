@@ -8,6 +8,7 @@ TODO - For viewing workouts just make a simple list of all the previous workouts
 TODO - Have an average rating and a graph
 TODO - What does this do? (frame.grid(row=1, column=2))
 TODO - Add Timer
+TODO - Add instructions
 
 
 

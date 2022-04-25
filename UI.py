@@ -5,6 +5,7 @@ import time
 from datetime import datetime
 from datetime import timedelta
 import ast
+import workout_bud
 
 
 def workingOutSkeleton():
@@ -54,6 +55,7 @@ def deleteUser(root):
     
 def workoutFrame(root, userNum):
     #Create a frame
+    buttonPress = 0
     frame = Frame(root)
     frame.grid(row=1, column=2)
 
@@ -102,18 +104,20 @@ def workoutFrame(root, userNum):
     myLabel1.grid(row=0, column=0)
 
     r = IntVar()
-    buttonPress = ""
     def radioButtonPress(value):
+        global buttonPress
         if value==1:
-            buttonPress = "yes"
+            buttonPress = 1
+            workout_bud.workout(1)
         elif value==2:
-            buttonPress = "no"
+            buttonPress = 2
+            workout_bud.workout(2)
 
     def startWorkout():
         if buttonPress == 1:
-            pass
+            workout_bud.workout(1)
         elif buttonPress ==2:
-            pass
+            workout_bud.workout(2)
         else:
             print("Please select radio button")
 
@@ -121,7 +125,7 @@ def workoutFrame(root, userNum):
     RB1.grid(row=1, column=0)
     RB2 = Radiobutton(frame, text="Squats", variable=r, value=2, command=lambda: radioButtonPress(r.get()))
     RB2.grid(row=2, column=0)
-    myButton1 = Button(frame, text="Start Working Out (This will open new window)", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=lambda:startWorkout(buttonPress))
+    myButton1 = Button(frame, text="Start Working Out (This will open new window)", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=startWorkout)
     myButton1.grid(row=3, column=0)
     myButton2 = Button(frame, text="Save Workout (This will end your workout session)", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=lambda:saveWorkout(repsVar, totalScoreVar, paramListVar, finalTimeVar))
     myButton2.grid(row=4, column=0)

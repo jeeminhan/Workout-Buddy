@@ -164,7 +164,7 @@ def showStats(root, userNum, dateRow):
     # myscrollbar.grid(row=2, column = 0,fill="y")
 
     test.delete(1.0,END)   # Delete text from widget if there is any
-    test.insert(END,'Rep:   Avg Score:    P1   P2    P3    P4:\n')
+    test.insert(END,'Rep:   Avg Score:        P1    P2     P3    P4:\n')
     for index in range(len(pushUpRep)):
         col1 = '{:<8}'.format(pushUpRep[index])
         col2 = '{:<8}'.format(avgScore[index])

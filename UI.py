@@ -55,7 +55,7 @@ def deleteUser(root):
     
 def workoutFrame(root, userNum):
     #Create a frame
-    buttonPress = 0
+    # buttonPress = 0
     frame = Frame(root)
     frame.grid(row=1, column=2)
 
@@ -103,34 +103,42 @@ def workoutFrame(root, userNum):
     myLabel1 = Label(frame, text="Choose Push-up or Squats", fg="blue", bg="#f5f5dc")
     myLabel1.grid(row=0, column=0)
 
-    r = IntVar()
-    def radioButtonPress(value):
-        global buttonPress
-        if value==1:
-            buttonPress = 1
-            workout_bud.workout(1)
-        elif value==2:
-            buttonPress = 2
-            workout_bud.workout(2)
+    # r = IntVar()
+    # def radioButtonPress(value):
+    #     global buttonPress
+    #     if value==1:
+    #         buttonPress = 1
+    #         #workout_bud.workout(1)
+    #         print(buttonPress)
+    #     elif value==2:
+    #         buttonPress = 2
+    #         #workout_bud.workout(2)
+    # print(buttonPress)
+    # def startWorkout():
+    #     print(buttonPress)
+    #     if buttonPress == 1:
+    #         workout_bud.workout(1)
+    #     elif buttonPress ==2:
+    #         workout_bud.workout(2)
+    #     else:
+    #         print("Please select radio button")
+    def startPushups():
+        workout_bud.workout(1)
+    def startSquats():
+        workout_bud.workout(2)   
 
-    def startWorkout():
-        if buttonPress == 1:
-            workout_bud.workout(1)
-        elif buttonPress ==2:
-            workout_bud.workout(2)
-        else:
-            print("Please select radio button")
-
-    RB1 = Radiobutton(frame, text="Push-Ups", variable=r, value=1, command=lambda: radioButtonPress(r.get()))
-    RB1.grid(row=1, column=0)
-    RB2 = Radiobutton(frame, text="Squats", variable=r, value=2, command=lambda: radioButtonPress(r.get()))
-    RB2.grid(row=2, column=0)
-    myButton1 = Button(frame, text="Start Working Out (This will open new window)", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=startWorkout)
-    myButton1.grid(row=3, column=0)
-    myButton2 = Button(frame, text="Save Workout (This will end your workout session)", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=lambda:saveWorkout(repsVar, totalScoreVar, paramListVar, finalTimeVar))
-    myButton2.grid(row=4, column=0)
-    myButton3 = Button(frame, text="Done", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
-    myButton3.grid(row=5, column=0)
+    # RB1 = Radiobutton(frame, text="Push-Ups", variable=r, value=1, command=lambda: radioButtonPress(r.get()))
+    # RB1.grid(row=1, column=0)
+    # RB2 = Radiobutton(frame, text="Squats", variable=r, value=2, command=lambda: radioButtonPress(r.get()))
+    # RB2.grid(row=2, column=0)
+    myButton1 = Button(frame, text="Start Pushups", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=startPushups)
+    myButton1.grid(row=1, column=0)
+    myButton2 = Button(frame, text="Start Squats", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=startSquats)
+    myButton2.grid(row=1, column=1)
+    myButton3 = Button(frame, text="Save Workout (This will end your workout session)", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=lambda:saveWorkout(repsVar, totalScoreVar, paramListVar, finalTimeVar))
+    myButton3.grid(row=3, column=0)
+    myButton4 = Button(frame, text="Done", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
+    myButton4.grid(row=4, column=0)
 
 def showStats(root, userNum, dateRow):
     frame = Frame(root)

@@ -128,10 +128,6 @@ def squats(imlist):
         squat_pos ="down"
 
         feet = abs(imlist[31][2]-imlist[29][2])
-        # print("feet: ", feet)
-        # if(abs(feet) > 5):
-        #     feet_rating = 10
-        #back_angle = arctan()
         if(feet > 1):
             feet_rating -= 15
 
@@ -142,7 +138,6 @@ def squats(imlist):
             
     if(imlist[24][2] <= imlist[26][2] and imlist[23][2] <= imlist[25][2]) and squat_pos=="down":
         squat_pos = "up"
-        #print("hello")
         return True
     
     return False
@@ -150,19 +145,27 @@ def squats(imlist):
 
 # For webcam input:
 def workout(exercise_option):
-    #global elbow_rating
-    #global center_rating
+    #global 
+    elbow_rating = 0
+    index=0
+    #global
+    center_rating = 0
+    shoulders = []
+    avg_rating = 0
     global max_pos
     rep_rating = []
     count = 0
-    #position = None
     poses = ''
     cap = cv2.VideoCapture(0)
     font = cv2.FONT_HERSHEY_SIMPLEX
+    i = 0
+    num = 0
+    temps =[]
     with mp_pose.Pose(
         min_detection_confidence=0.7,
         min_tracking_confidence=0.7) as pose:
         while cap.isOpened():
+            
             success, image = cap.read()
             if not success:
                 print("Ignoring empty camera frame.")
@@ -193,27 +196,41 @@ def workout(exercise_option):
                     imlist.append([id,X,Y])
 
                 if len(imlist) != 0:
-                    #print(imlist[15][1])
-                    #print((imlist[12][1] - (imlist[12][1] -  imlist[11][1])/2) - imlist[0][1])
-                    if count == 1:
-                        max_pos = (imlist[16][2]-imlist[12][2]) + (imlist[15][2]-imlist[11][2])/2
-                    #print("starting position: ", starting_pos)q
-                    #print(imlist[16][2])
+                    i+=1
+                    shoulders.append(imlist[12][2])
+                    #print("i ", i, "lenght ", len(shoulders))
+                    temps = []
                     if exercise_option == 1:
                         test, temp1, temp2 = push_up(imlist)
-                        if push_up_pos == '':
-                            elbow_rating = temp1
-                            center_rating = temp2
-                            print("Elbow: ", elbow_rating, " Center: ", center_rating)
+                        if(len(shoulders) > 10):
+                            #print(len(shoulders), " i ", i)
+                            #print("shoulders", shoulders[i-1])
+                            min = shoulders[num-5]
+                            index = 0
+                            y = -1
+                            for x in shoulders[num-5:num]:
+                                y += 1
+                                if(x < min):
+                                    min = x
+                                    index = y
+                                temps.append([temp1, temp2])
+                            # if shoulders[i-3] > shoulders[i-2] and shoulders[i-2] > shoulders[i-1] and test:
+                            #     elbow_rating = temp1
+                            #     center_rating = temp2
+                            #     print("Elbow: ", elbow_rating, " Center: ", center_rating)
+                           # y = min(temps)
 
-                        if test:
-                            #if(temp != -1)
-                            
-                            rep_rating.append([elbow_rating, center_rating, 0 ,0])
-                            avg_rating += elbow_rating + center_rating
-                            poses = 'Push-ups: '
-                            count+=1
-                            print(count)
+                            if test:
+                                if len(temps) > index:
+                                    print("len ", len(temps), ", index: ", index)
+                                    elbow_rating = temps[index][0]
+                                    center_rating = temps[index][1]
+                                    rep_rating.append([elbow_rating, center_rating, 0 ,0])
+                                    avg_rating += elbow_rating + center_rating
+                                    poses = 'Push-ups: '
+                                    num = i
+                                    count+=1
+                                    print(count)
 
                     elif exercise_option == 2:
                         if squats(imlist):

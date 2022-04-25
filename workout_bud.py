@@ -91,10 +91,10 @@ def push_up(imlist):
             
         push_up_pos = "up"
         
-        #return True
+        return True
 
 
-    return  
+    return False
 
 
 
@@ -133,9 +133,9 @@ def squats(imlist):
     if(imlist[24][2] <= imlist[26][2] and imlist[23][2] <= imlist[25][2]) and squat_pos=="down":
         squat_pos = "up"
         #print("hello")
-        #return True
+        return True
     
-    return 
+    return False
 
 
 # For webcam input:
@@ -187,16 +187,16 @@ def workout(exercise_option):
                     #print("starting position: ", starting_pos)q
                     #print(imlist[16][2])
                     if exercise_option == 1:
-                        push_up(imlist)
-                        poses = 'Push-ups: '
-                        count+=1
-                        print(count)
+                        if push_up(imlist):
+                            poses = 'Push-ups: '
+                            count+=1
+                            print(count)
 
                     elif exercise_option == 2:
-                        squats(imlist)
-                        poses = 'Squats: '
-                        count+=1
-                        print(count)
+                        if squats(imlist):
+                            poses = 'Squats: '
+                            count+=1
+                            print(count)
 
             # Flip the image horizontally for a selfie-view display.
             image=cv2.flip(image,1)

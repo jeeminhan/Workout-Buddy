@@ -6,8 +6,6 @@ from datetime import datetime
 from datetime import timedelta
 import ast
 
-from pytest import param
-
 
 def workingOutSkeleton():
     random.seed()
@@ -456,6 +454,6 @@ frame = mainFrame(root)
 
 
 #Set the geometry of frame
-root.geometry("600x300")
+root.geometry("800x400")
 
 root.mainloop()

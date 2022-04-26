@@ -10,102 +10,69 @@ mp_pose = mp.solutions.pose
 push_up_pos = None
 squat_pos = None
 
-elbow_rating = 0
-center_rating = 0
 def push_up(imlist):
     global push_up_pos
-    #global elbow_rating
-    #global center_rating
-    elbow_rating = 100
-    center_rating = 100
-    #measure the peak of your pushup
-    peak = 0
-    peak_rating = 100
-
-    #measure the how wide the elbows sare
-    elbow_pos = 0
-    #elbow_rating = 100
-
-    #measure how centered your pushup is
-    center = 0
-    #center_rating = 100
-
-    #measure how straight the back is
-    back = 0
-    back_rating = 100
-
-    #average of all ratings given
-    avg_rating = 0
-
-    #check for the view of the camera
-    side_view = True
-    #check for which side is given
-    right_side = False
-
-    #check angle of the camera
-    if(imlist[14][1] < imlist[12][1] and imlist[12][1] < imlist[11][1] and imlist[11][1] < imlist[13][1]):
-        #print(" not Side View")
-        side_view = False
-    else:
-    #if side angle of the camera is given, check for right or left side
-        if(imlist[12][1]>imlist[28][1]):
-            #print("Right Side")
-            right_side = True
-
+    
     #down position of pushup
     if(imlist[12][2] >= imlist[14][2] and imlist[11][2] >= imlist[13][2]):
         push_up_pos="down"
 
-        #creating the judging criteria when given a front view of the pushup
-        if not side_view:
-            #Creating the rating for the elbows
-            elbow_pos = (imlist[14][1] - imlist[13][1])/(imlist[12][1]-imlist[11][1])
-            if(elbow_pos > 1.62):
-                #print("Point your elbows backwards")
-                elbow_rating -= (elbow_rating/1.62 - 1) * 426
-
-            #Creating the rating for the centering of the head and equal distance between hands
-            center = abs(imlist[14][1] - imlist [12][1])/abs(imlist[11][1] - imlist[13][1])
-            #dist = abs(center-imlist[0][1])
-            if(center > 1.5):
-                center_rating -= (center/1.5 - 1) * 150
-                #print("Center greater: ", center_rating)
-
-            elif(center < 0.5):
-                center_rating -= (1-center/0.5) * 150
-                #print("Center lesser: ", center_rating)
-        
-        else:
-            if(right_side):
-                back = imlist[12][2]-imlist[24][2]
-            else:
-                back = imlist[11][2]-imlist[23][2]
-
-
-
-        #print("Elbow: ", elbow_rating, " Center: ", center_rating)
     #up position of pushup
-    if(imlist[12][2] <= imlist[14][2] and imlist[11][2] <= imlist[13][2]) and push_up_pos=="down": 
-        
-        if side_view:
-            if(right_side):
-        #         height = imlist[12][1] - imlist[14][1]
-                back = imlist[12][2] - imlist[24][2]
-            else:
-        #       height = imlist[13][1] - imlist[11][1]
-        #       print("height: ", height)
-                back = imlist[11][2] - imlist[23][2]
-            if(back > 10):
-                back_rating -= 10
-
-            
+    if(imlist[12][2] <= imlist[14][2] and imlist[11][2] <= imlist[13][2]) and push_up_pos=="down":     
         push_up_pos = "up"
+        return True
 
-        return True, -1, -1
+    return False
 
+def push_ups_rating(imlist):
+    global push_up_pos
 
-    return False, elbow_rating, center_rating
+    elbow_rating = 100
+    center_rating = 100
+    
+    if push_up_pos == "down":
 
+        #Creating the rating for how wide the elbows are
+        elbow_pos = (imlist[14][1] - imlist[13][1])/(imlist[12][1]-imlist[11][1])
+        if(elbow_pos > 1.62):
+            elbow_rating -= (elbow_pos/1.62 - 1) * 279
+        #print("Elbow: ", elbow_rating, " ", (elbow_rating/1.62 - 1) * 279)
+        #print("Pos: ", elbow_pos)
+
+        #Creating the rating for the centering of the head and equal distance between hands
+        center = abs(imlist[14][1] - imlist [12][1])/abs(imlist[11][1] - imlist[13][1])
+        if(center > 1.5):
+            center_rating -= (center/1.5 - 1) * 150
+        elif(center < 0.5):
+            center_rating -= (1-center/0.5) * 150
+
+    if elbow_rating < 0:
+        elbow_rating = 0
+    if center_rating < 0:
+        center_rating = 0
+
+    return elbow_rating, center_rating
+
+def height_rater(maxes):
+    height_rating = 100
+    #avg = 0
+    #imlist = lists[len(lists) - 1]
+    #if len(maxes) > 0:
+        #for x in maxes:
+           # avg += x
+        
+        #avg /= len(maxes)
+
+    if push_up_pos == "up":
+
+        if(max(maxes) > maxes[len(maxes) - 1]):
+            height_rating -= (1 - maxes[len(maxes) - 1]/max(maxes)) * 400
+    #print("Percentage: ",maxes[len(maxes) - 1], " max: ", max(maxes))
+
+    if height_rating < 0:
+        height_rating = 0
+
+    return height_rating
 
 
 def squats(imlist):
@@ -145,27 +112,19 @@ def squats(imlist):
 
 # For webcam input:
 def workout(exercise_option):
-    #global 
-    elbow_rating = 0
-    index=0
-    #global
-    center_rating = 0
-    shoulders = []
     avg_rating = 0
-    global max_pos
-    rep_rating = []
     count = 0
     poses = ''
     cap = cv2.VideoCapture(0)
     font = cv2.FONT_HERSHEY_SIMPLEX
-    i = 0
-    num = 0
-    temps =[]
+    rep_rating = []
+    heights = []
+    maxes = []
+    old_max = 0
     with mp_pose.Pose(
         min_detection_confidence=0.7,
         min_tracking_confidence=0.7) as pose:
         while cap.isOpened():
-            
             success, image = cap.read()
             if not success:
                 print("Ignoring empty camera frame.")
@@ -196,42 +155,41 @@ def workout(exercise_option):
                     imlist.append([id,X,Y])
 
                 if len(imlist) != 0:
-                    i+=1
-                    shoulders.append(imlist[12][2])
-                    #print("i ", i, "lenght ", len(shoulders))
-                    temps = []
+                    #tracking.append(imlist)
                     if exercise_option == 1:
-                        test, temp1, temp2 = push_up(imlist)
-                        if(len(shoulders) > 10):
-                            #print(len(shoulders), " i ", i)
-                            #print("shoulders", shoulders[i-1])
-                            min = shoulders[num-5]
-                            index = 0
-                            y = -1
-                            for x in shoulders[num-5:num]:
-                                y += 1
-                                if(x < min):
-                                    min = x
-                                    index = y
-                                temps.append([temp1, temp2])
-                            # if shoulders[i-3] > shoulders[i-2] and shoulders[i-2] > shoulders[i-1] and test:
-                            #     elbow_rating = temp1
-                            #     center_rating = temp2
-                            #     print("Elbow: ", elbow_rating, " Center: ", center_rating)
-                           # y = min(temps)
+                        height = (imlist[12][2] + imlist[12][2])/2
+                        heights.append(height)
+                      
+                        elbow_rating, center_rating = push_ups_rating(imlist)
+                    
+                        
+                        if push_up(imlist):
+                            poses = 'Push-ups: '
+                            #print("Elbow: ", elbow_rating, "Center: ", center_rating)
+                            maxes.append(max(heights))
+                            if count > 1:
+                                if old_max != max(heights):
+                                    avg_rating -= 2*count
 
-                            if test:
-                                if len(temps) > index:
-                                    print("len ", len(temps), ", index: ", index)
-                                    elbow_rating = temps[index][0]
-                                    center_rating = temps[index][1]
-                                    rep_rating.append([elbow_rating, center_rating, 0 ,0])
-                                    avg_rating += elbow_rating + center_rating
-                                    poses = 'Push-ups: '
-                                    num = i
-                                    count+=1
-                                    print(count)
+                            old_max = max(heights)
 
+                            height_rating = height_rater(maxes)
+                            # if(height_rating < 90 and count > 3):
+                            #     maxes.remove(len(maxes)-1)
+                            #print("length: ", len(maxes))
+                            #print("Height: ", height_rating)
+                            count+=1
+                            print(count)
+                            heights = []
+
+                            rep_rating.append([elbow_rating, center_rating, height_rating])
+
+                            avg_rating += (elbow_rating * .25) + (center_rating * .35) + (height_rating * .4)
+
+                            avg = (elbow_rating * .25) + (center_rating * .35) + (height_rating * .4)
+
+                            print("Average: ", avg, " Elbow: ", elbow_rating, " Center: ", center_rating, " Height: ", height_rating)
+                    
                     elif exercise_option == 2:
                         if squats(imlist):
                             poses = 'Squats: '
@@ -256,9 +214,12 @@ def workout(exercise_option):
         
     cap.release()
     cv2.destroyAllWindows()
-
-    avg_rating = avg_rating/(count * 2)
     
+    if count >= 1:
+        avg_rating = avg_rating/(count)
+    
+    print("Overall Average: ", avg_rating)
+
     return count, avg_rating, rep_rating
 
 workout(1)

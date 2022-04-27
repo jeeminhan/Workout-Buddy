@@ -5,7 +5,7 @@ import time
 from datetime import datetime
 from datetime import timedelta
 import ast
-import workout_bud2
+import workout_bud
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, 
 NavigationToolbar2Tk)
@@ -190,7 +190,7 @@ def workoutFrame(root, userNum):
 
 
         # finalTimeVar, repsVar, totalScoreVar, paramListVar = workingOutSkeleton()
-        repsVar, totalScoreVar, paramListVar = workout_bud2.workout(1)
+        repsVar, totalScoreVar, paramListVar = workout_bud.workout(1)
     def startSquats():
         global optionWorkout
         optionWorkout = 2
@@ -202,7 +202,7 @@ def workoutFrame(root, userNum):
 
 
         # finalTimeVar, repsVar, totalScoreVar, paramListVar = workingOutSkeleton()
-        repsVar, totalScoreVar, paramListVar = workout_bud2.workout(2)   
+        repsVar, totalScoreVar, paramListVar = workout_bud.workout(2)   
 
     # RB1 = Radiobutton(frame, text="Push-Ups", variable=r, value=1, command=lambda: radioButtonPress(r.get()))
     # RB1.grid(row=1, column=0)

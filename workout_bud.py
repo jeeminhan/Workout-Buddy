@@ -93,9 +93,9 @@ def push_up_comments(elbow_rating, center_rating, height_rating):
         comments += "You are depending too heavily on one side, keep your back straight and shoulders locked \n"
     
 
-    if(center_rating > 90):
+    if(height_rating > 90):
         comments += "Good job, you are going all the way up!"
-    elif(center_rating > 50):
+    elif(height_rating > 50):
         comments += "Try to reach the top of your rep for maximum gains"
     else:
         comments += "You are not going up high enough"

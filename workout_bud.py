@@ -74,6 +74,34 @@ def height_rater(maxes):
 
     return height_rating
 
+def push_up_comments(elbow_rating, center_rating, height_rating):
+
+    comments = ""
+
+    if(elbow_rating > 90):
+        comments += "Good work with you elbows! \n"
+    elif(elbow_rating > 50):
+        comments += "Your elbows are too far apart \n"
+    else:
+        comments += "Your elbows need to point towards your feet \n"
+
+    if(center_rating > 90):
+        comments += "Good job pushing with both arms equally! \n"
+    elif(center_rating > 50):
+        comments += "Try to push with both hands equally \n"
+    else:
+        comments += "You are depending too heavily on one side, keep your back straight and shoulders locked \n"
+    
+
+    if(center_rating > 90):
+        comments += "Good job, you are going all the way up!"
+    elif(center_rating > 50):
+        comments += "Try to reach the top of your rep for maximum gains"
+    else:
+        comments += "You are not going up high enough"
+    
+
+    return comments
 
 def squats(imlist):
     global squat_pos

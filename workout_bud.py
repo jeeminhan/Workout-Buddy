@@ -122,7 +122,9 @@ def squat_rater(imlist):
     feet = 0
     feet_rating = 100
 
-    knees = (imlist[24][1] - imlist[23][1])/(imlist[26][1] - imlist[25][1])
+    if abs(imlist[26][1] - imlist[25][1]) > 0:
+        knees = (imlist[24][1] - imlist[23][1])/(imlist[26][1] - imlist[25][1])
+
     
     #print("knees: ", knees)
     if squat_pos == "down":
@@ -251,7 +253,7 @@ def workout(exercise_option):
                                 rep_rating.append([knees_rating, center_rating, feet_rating])
 
                                 print("Average: ", avg, " Knees: ", knees_rating, " Center: ", center_rating, " Feet: ", feet_rating)
-                                
+
             # Flip the image horizontally for a selfie-view display.
             image=cv2.flip(image,1)
             cv2.putText(image, 

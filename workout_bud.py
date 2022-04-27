@@ -53,27 +53,22 @@ def push_ups_rating(imlist):
 
     return elbow_rating, center_rating
 
+#Creates the rating for the height of your pushups
 def height_rater(maxes):
     height_rating = 100
-    #avg = 0
-    #imlist = lists[len(lists) - 1]
-    #if len(maxes) > 0:
-        #for x in maxes:
-           # avg += x
-        
-        #avg /= len(maxes)
 
     if push_up_pos == "up":
 
         if(max(maxes) > maxes[len(maxes) - 1]):
             height_rating -= (1 - maxes[len(maxes) - 1]/max(maxes)) * 400
-    #print("Percentage: ",maxes[len(maxes) - 1], " max: ", max(maxes))
 
     if height_rating < 0:
         height_rating = 0
 
     return height_rating
 
+
+#Writes comments based on your score
 def push_up_comments(elbow_rating, center_rating, height_rating):
 
     comments = ""
@@ -93,9 +88,9 @@ def push_up_comments(elbow_rating, center_rating, height_rating):
         comments += "You are depending too heavily on one side, keep your back straight and shoulders locked \n"
     
 
-    if(height_rating > 90):
+    if(center_rating > 90):
         comments += "Good job, you are going all the way up!"
-    elif(height_rating > 50):
+    elif(center_rating > 50):
         comments += "Try to reach the top of your rep for maximum gains"
     else:
         comments += "You are not going up high enough"
@@ -106,30 +101,8 @@ def push_up_comments(elbow_rating, center_rating, height_rating):
 def squats(imlist):
     global squat_pos
 
-    back = 0
-
-    center = 0
-    center_rating = 100
-
-    feet = 0
-    feet_rating = 100
-
-    knees = 0
-
-    side_view = True
-    right_view = False
-
     if(imlist[24][2] >= imlist[26][2] and imlist[23][2] >= imlist[25][2]):
         squat_pos ="down"
-
-        feet = abs(imlist[31][2]-imlist[29][2])
-        if(feet > 1):
-            feet_rating -= 15
-
-        center = imlist[11][1] - (imlist[29][1] - (imlist[29][1] - imlist[31][1])/2)
-        print("Center: ", center)
-        if(center > 1.5):
-            center_rating -= 10
             
     if(imlist[24][2] <= imlist[26][2] and imlist[23][2] <= imlist[25][2]) and squat_pos=="down":
         squat_pos = "up"
@@ -137,9 +110,49 @@ def squats(imlist):
     
     return False
 
+def squat_rater(imlist):
+    global squat_pos
+
+    knees = 0
+    knees_rating = 100
+    
+    center = 0
+    center_rating = 100
+
+    feet = 0
+    feet_rating = 100
+
+    knees = (imlist[24][1] - imlist[23][1])/(imlist[26][1] - imlist[25][1])
+    
+    #print("knees: ", knees)
+    if squat_pos == "down":
+        if knees > 0.4:
+            #print("bad knees, rating taken")
+            knees_rating -= (knees/0.4 - 1) * 80
+    if abs(imlist[23][1]-imlist[25][1]) > 0:
+
+        center = abs(imlist[26][1]-imlist[24][1])/abs(imlist[23][1]-imlist[25][1])
+        
+        #print("Center: ", center)
+
+        if(center > 1.04):
+            center_rating -= (center/1.04 - 1) * 650 
+        elif(center < .96):
+            center_rating -= (1 - center/0.96) * 650
+
+    feet = ((imlist[32][2]/imlist[30][2]) + (imlist[31][2]/imlist[29][2]))/2
+
+    print("Feet: ", feet)
+
+    if feet > 1.03 or feet < .97:
+        feet_rating = 0
+
+    return knees_rating, center_rating, feet_rating
+
 
 # For webcam input:
 def workout(exercise_option):
+
     avg_rating = 0
     count = 0
     poses = ''
@@ -149,6 +162,7 @@ def workout(exercise_option):
     heights = []
     maxes = []
     old_max = 0
+
     with mp_pose.Pose(
         min_detection_confidence=0.7,
         min_tracking_confidence=0.7) as pose:
@@ -219,11 +233,24 @@ def workout(exercise_option):
                                 print("Average: ", avg, " Elbow: ", elbow_rating, " Center: ", center_rating, " Height: ", height_rating)
                         
                     elif exercise_option == 2:
-                        if squats(imlist):
-                            poses = 'Squats: '
-                            count+=1
-                            print(count)
+                        if(imlist[24][2]<imlist[28][2]):
 
+                            knees_rating, center_rating, feet_rating = squat_rater(imlist)
+
+                            if squats(imlist):
+                                #print("Knees rating: ", knees_rating)
+
+                                poses = 'Squats: '
+                                count+=1
+                                print(count)
+
+                                avg_rating += (knees_rating * .425) + (center_rating * .425) + (feet_rating * .15)
+
+                                avg = (knees_rating * .425) + (center_rating * .425) + (feet_rating * .15)
+
+                                rep_rating.append([knees_rating, center_rating, feet_rating])
+
+                                print("Average: ", avg, " Knees: ", knees_rating, " Center: ", center_rating, " Feet: ", feet_rating)
             # Flip the image horizontally for a selfie-view display.
             image=cv2.flip(image,1)
             cv2.putText(image, 
@@ -250,4 +277,4 @@ def workout(exercise_option):
 
     return count, avg_rating, rep_rating
 
-workout(1)
+workout(2)

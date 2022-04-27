@@ -88,9 +88,9 @@ def push_up_comments(elbow_rating, center_rating, height_rating):
         comments += "You are depending too heavily on one side, keep your back straight and shoulders locked \n"
     
 
-    if(center_rating > 90):
+    if(height_rating > 90):
         comments += "Good job, you are going all the way up!"
-    elif(center_rating > 50):
+    elif(height_rating > 50):
         comments += "Try to reach the top of your rep for maximum gains"
     else:
         comments += "You are not going up high enough"
@@ -119,7 +119,8 @@ def squat_rater(imlist):
     center = 0
     center_rating = 100
 
-    feet = 0
+    feet1 = 0
+    feet2 = 0
     feet_rating = 100
 
     if abs(imlist[26][1] - imlist[25][1]) > 0:
@@ -142,16 +143,39 @@ def squat_rater(imlist):
         elif(center < .96):
             center_rating -= (1 - center/0.96) * 650
 
-    feet = ((imlist[32][2]/imlist[30][2]) + (imlist[31][2]/imlist[29][2]))/2
+    feet1 = (imlist[32][2]/imlist[30][2])
+    feet2 = (imlist[31][2]/imlist[29][2])
 
-    print("Feet: ", feet)
+    #print("Feet: ", feet)
 
-    if feet > 1.03 or feet < .97:
+    if (feet1 > 1.03 or feet1 < 1.97) or (feet1 > 1.03 or feet1 < 1.97):
         feet_rating = 0
 
     return knees_rating, center_rating, feet_rating
 
+def squat_commenter(knees_rating, center_rating, feet_rating):
+    comments = ""
 
+    if(knees_rating > 90):
+        comments += "Good job keeping your knees out! \n"
+    elif(knees_rating > 50):
+        comments += "Try to keep your knees pointing in the same direction as your feet \n"
+    else:
+        comments += "Your knees are caving in, focus on pointing them outward \n"
+
+    if(center_rating > 90):
+        comments += "Good job pushing with both legs equally! \n"
+    elif(center_rating > 50):
+        comments += "Try to push with both legs equally\n"
+    else:
+        comments += "You are leaning too much on one side, keep your upperbody centered and flex your core \n"
+
+    if feet_rating == 100:
+        comments += "Your feet are stable!"
+    else:
+        comments += "Make sure both feet are completely on the ground, focus on balance"
+
+    return comments
 # For webcam input:
 def workout(exercise_option):
 

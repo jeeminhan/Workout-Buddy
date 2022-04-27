@@ -302,15 +302,15 @@ def workout(exercise_option):
                     2, 
                     cv2.LINE_4)
 
-            #if len(rep_rating) > 0:
-            cv2.putText(image,
-                    #str(rep_rating[len(rep_rating) - 1][0]) + " " + str(rep_rating[len(rep_rating) - 1][1]) + " " + str(rep_rating[len(rep_rating) - 1][2]),
-                    "test",
-                    (500, 450), 
-                    font, 1, 
-                    (0, 0, 0), 
-                    2, 
-                    cv2.LINE_4)
+            if len(rep_rating) > 0:
+                cv2.putText(image,
+                        str(rep_rating[len(rep_rating) - 1][0]) + " " + str(rep_rating[len(rep_rating) - 1][1]) + " " + str(rep_rating[len(rep_rating) - 1][2]),
+                        #"test",
+                        (200, 450), 
+                        font, 1, 
+                        (0, 0, 0), 
+                        2, 
+                        cv2.LINE_4)
 
             cv2.imshow('MediaPipe Pose', image)
             

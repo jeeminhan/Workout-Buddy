@@ -51,6 +51,9 @@ def push_ups_rating(imlist):
     if center_rating < 0:
         center_rating = 0
 
+    elbow_rating = round(elbow_rating, 2)
+    center_rating = round(center_rating, 2)
+
     return elbow_rating, center_rating
 
 #Creates the rating for the height of your pushups
@@ -64,6 +67,8 @@ def height_rater(maxes):
 
     if height_rating < 0:
         height_rating = 0
+
+    height_rating = round(height_rating, 2)
 
     return height_rating
 
@@ -147,9 +152,16 @@ def squat_rater(imlist):
     feet2 = (imlist[31][2]/imlist[29][2])
 
     #print("Feet: ", feet)
-
-    if (feet1 > 1.03 or feet1 < 1.97) or (feet1 > 1.03 or feet1 < 1.97):
+    if (feet1 > 1.03 or feet1 < .97) or (feet2 > 1.03 or feet2 < .97):
         feet_rating = 0
+
+    if knees_rating < 0:
+        knees_rating = 0
+    if center_rating < 0:
+        center_rating = 0
+
+    knees_rating = round(knees_rating,2)
+    center_rating = round(center_rating, 2)
 
     return knees_rating, center_rating, feet_rating
 
@@ -252,9 +264,9 @@ def workout(exercise_option):
 
                                 rep_rating.append([elbow_rating, center_rating, height_rating])
 
-                                avg_rating += (elbow_rating * .25) + (center_rating * .35) + (height_rating * .4)
+                                avg_rating += round(((elbow_rating * .25) + (center_rating * .35) + (height_rating * .4)),2)
 
-                                avg = (elbow_rating * .25) + (center_rating * .35) + (height_rating * .4)
+                                avg = round(((elbow_rating * .25) + (center_rating * .35) + (height_rating * .4)),2)
 
                                 print("Average: ", avg, " Elbow: ", elbow_rating, " Center: ", center_rating, " Height: ", height_rating)
                         
@@ -270,19 +282,31 @@ def workout(exercise_option):
                                 count+=1
                                 print(count)
 
-                                avg_rating += (knees_rating * .425) + (center_rating * .425) + (feet_rating * .15)
+                                avg_rating += round(((knees_rating * .425) + (center_rating * .425) + (feet_rating * .15)),2)
 
-                                avg = (knees_rating * .425) + (center_rating * .425) + (feet_rating * .15)
+                                avg = round(((knees_rating * .425) + (center_rating * .425) + (feet_rating * .15)),2)
 
                                 rep_rating.append([knees_rating, center_rating, feet_rating])
 
                                 print("Average: ", avg, " Knees: ", knees_rating, " Center: ", center_rating, " Feet: ", feet_rating)
 
+            
             # Flip the image horizontally for a selfie-view display.
             image=cv2.flip(image,1)
+            
             cv2.putText(image, 
                     str(poses) + str(count), 
                     (50, 50), 
+                    font, 1, 
+                    (0, 0, 0), 
+                    2, 
+                    cv2.LINE_4)
+
+            #if len(rep_rating) > 0:
+            cv2.putText(image,
+                    #str(rep_rating[len(rep_rating) - 1][0]) + " " + str(rep_rating[len(rep_rating) - 1][1]) + " " + str(rep_rating[len(rep_rating) - 1][2]),
+                    "test",
+                    (500, 450), 
                     font, 1, 
                     (0, 0, 0), 
                     2, 

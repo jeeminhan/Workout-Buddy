@@ -251,6 +251,7 @@ def workout(exercise_option):
                                 rep_rating.append([knees_rating, center_rating, feet_rating])
 
                                 print("Average: ", avg, " Knees: ", knees_rating, " Center: ", center_rating, " Feet: ", feet_rating)
+                                
             # Flip the image horizontally for a selfie-view display.
             image=cv2.flip(image,1)
             cv2.putText(image, 

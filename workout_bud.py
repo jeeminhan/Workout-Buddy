@@ -143,6 +143,7 @@ def workout(exercise_option):
             image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
             imlist = []
+
             if(results.pose_landmarks):
                 mp_drawing.draw_landmarks(
                     image,
@@ -157,39 +158,38 @@ def workout(exercise_option):
                 if len(imlist) != 0:
                     #tracking.append(imlist)
                     if exercise_option == 1:
-                        height = (imlist[12][2] + imlist[12][2])/2
-                        heights.append(height)
-                      
-                        elbow_rating, center_rating = push_ups_rating(imlist)
-                    
+                        if imlist[12][2] < imlist[16][2]: 
+                            height = (imlist[12][2] + imlist[12][2])/2
+                            heights.append(height)
                         
-                        if push_up(imlist):
-                            poses = 'Push-ups: '
-                            #print("Elbow: ", elbow_rating, "Center: ", center_rating)
-                            maxes.append(max(heights))
-                            if count > 1:
-                                if old_max != max(heights):
-                                    avg_rating -= 2*count
+                            elbow_rating, center_rating = push_ups_rating(imlist)
+                        
+                            
+                            if push_up(imlist):
+                                poses = 'Push-ups: '
+                                #print("Elbow: ", elbow_rating, "Center: ", center_rating)
+                                maxes.append(max(heights))
+                                if count > 1:
+                                    if old_max != max(heights):
+                                        avg_rating -= 2*count
 
-                            old_max = max(heights)
+                                old_max = max(heights)
+                                
 
-                            height_rating = height_rater(maxes)
-                            # if(height_rating < 90 and count > 3):
-                            #     maxes.remove(len(maxes)-1)
-                            #print("length: ", len(maxes))
-                            #print("Height: ", height_rating)
-                            count+=1
-                            print(count)
-                            heights = []
+                                height_rating = height_rater(maxes)
+                                
+                                count+=1
+                                print(count)
+                                heights = []
 
-                            rep_rating.append([elbow_rating, center_rating, height_rating])
+                                rep_rating.append([elbow_rating, center_rating, height_rating])
 
-                            avg_rating += (elbow_rating * .25) + (center_rating * .35) + (height_rating * .4)
+                                avg_rating += (elbow_rating * .25) + (center_rating * .35) + (height_rating * .4)
 
-                            avg = (elbow_rating * .25) + (center_rating * .35) + (height_rating * .4)
+                                avg = (elbow_rating * .25) + (center_rating * .35) + (height_rating * .4)
 
-                            print("Average: ", avg, " Elbow: ", elbow_rating, " Center: ", center_rating, " Height: ", height_rating)
-                    
+                                print("Average: ", avg, " Elbow: ", elbow_rating, " Center: ", center_rating, " Height: ", height_rating)
+                        
                     elif exercise_option == 2:
                         if squats(imlist):
                             poses = 'Squats: '

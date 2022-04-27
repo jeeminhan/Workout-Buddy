@@ -5,8 +5,49 @@ import time
 from datetime import datetime
 from datetime import timedelta
 import ast
-import workout_bud
+import workout_bud2
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, 
+NavigationToolbar2Tk)
+def finishedWorkoutScreen(root, userNum):
+    frame = Frame(root)
+    frame.grid(row=1, column=2)
 
+    def myClick():
+        for widgets in frame.winfo_children():
+            widgets.destroy()
+        mainFrame(root)
+    
+    doneButton = Button(frame, text="Back", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
+    doneButton.grid(row=2, column=0)
+
+    # the figure that will contain the plot
+    fig = Figure(figsize = (5, 5),
+                 dpi = 100)
+  
+    # list of squares
+    y = [i**2 for i in range(101)]
+  
+    # adding the subplot
+    plot1 = fig.add_subplot(111)
+ 
+    # plotting the graph
+    plot1.plot(y)
+  
+    # creating the Tkinter canvas
+    # containing the Matplotlib figure
+    canvas = FigureCanvasTkAgg(fig, master = frame)  
+    canvas.draw()
+  
+    # placing the canvas on the Tkinter window
+    canvas.get_tk_widget().grid(row=0, column=0)
+  
+    # creating the Matplotlib toolbar
+    toolbar = NavigationToolbar2Tk(canvas,frame)
+    toolbar.update()
+  
+    # placing the toolbar on the Tkinter window
+    canvas.get_tk_widget().pack()
 
 def workingOutSkeleton():
     random.seed()
@@ -98,14 +139,20 @@ def workoutFrame(root, userNum):
                 dateRepCommentList = [curr_time_str, reps, totalScore, parameterList]
                 csvWriter = csv.writer(csvfile) 
                 csvWriter.writerow(dateRepCommentList)
-        myButton3.destroy()
+        for widgets in frame.winfo_children():
+            widgets.destroy()
+        time.sleep(0.25)
+        finishedWorkoutScreen(root, userNum)
+
+    def dontSaveWorkout():
+        for widgets in frame.winfo_children():
+            widgets.destroy()
         time.sleep(0.25)
         userInfoFrame(root, userNum)
 
     # finalTimeVar, repsVar, totalScoreVar, paramListVar = workingOutSkeleton()
 
     myLabel1 = Label(frame, text="Choose Push-up or Squats", fg="blue", bg="#f5f5dc")
-    myLabel1.grid(row=0, column=0)
 
     # r = IntVar()
     # def radioButtonPress(value):
@@ -132,38 +179,49 @@ def workoutFrame(root, userNum):
         global optionWorkout
         optionWorkout = 1
         global finalTimeVar, repsVar, totalScoreVar, paramListVar
-        finalTimeVar, repsVar, totalScoreVar, paramListVar = workingOutSkeleton()
         myButton1.destroy()
         myButton2.destroy()
         myButton4.destroy()
+        myButton3.grid(row=3, column=0)
+        myButton5.grid()
 
 
 
-        # finalTimeVar, repsVar, totalScoreVar, paramListVar = workout_bud.workout(1)
+
+
+        # finalTimeVar, repsVar, totalScoreVar, paramListVar = workingOutSkeleton()
+        repsVar, totalScoreVar, paramListVar = workout_bud2.workout(1)
     def startSquats():
         global optionWorkout
         optionWorkout = 2
         global finalTimeVar, repsVar, totalScoreVar, paramListVar
-        finalTimeVar, repsVar, totalScoreVar, paramListVar = workingOutSkeleton()
         myButton1.destroy()
         myButton2.destroy()
         myButton4.destroy()
+        myButton3.grid(row=3, column=0)
 
-        # finalTimeVar, repsVar, totalScoreVar, paramListVar = workout_bud.workout(2)   
+
+        # finalTimeVar, repsVar, totalScoreVar, paramListVar = workingOutSkeleton()
+        repsVar, totalScoreVar, paramListVar = workout_bud2.workout(2)   
 
     # RB1 = Radiobutton(frame, text="Push-Ups", variable=r, value=1, command=lambda: radioButtonPress(r.get()))
     # RB1.grid(row=1, column=0)
     # RB2 = Radiobutton(frame, text="Squats", variable=r, value=2, command=lambda: radioButtonPress(r.get()))
     # RB2.grid(row=2, column=0)
-    myButton1 = Button(frame, text="Start Pushups", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=startPushups)
-    myButton1.grid(row=1, column=0)
-    myButton2 = Button(frame, text="Start Squats", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=startSquats)
-    myButton2.grid(row=1, column=1)
+    myButton1 = Button(frame, text="Start Pushups", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=startPushups, font=("Helvetica", 16, "bold italic"))
+    myButton2 = Button(frame, text="Start Squats", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=startSquats, font=("Helvetica", 16, "bold italic"))
     myButton3 = Button(frame, text="Save Workout (This will end your workout session)", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=lambda:saveWorkout(repsVar, totalScoreVar, paramListVar))
-    myButton3.grid(row=3, column=0)
     myButton4 = Button(frame, text="Done", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
+    myButton5 = Button(frame, text="Exit Without Saving", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=dontSaveWorkout)
+
+
+    myLabel1.grid(row=0, column=0)
+    myButton1.grid(row=1, column=0)
+    myButton2.grid(row=1, column=1)
     myButton4.grid(row=4, column=0)
-    
+
+
+
 def showStats(root, userNum, dateRow):
     frame = Frame(root)
     # WHAT DOES THIS DO?
@@ -337,11 +395,11 @@ def userInfoFrame(root, userNum):
     myLabel1.grid(row=0, column=0)
     myLabel2 = Label(frame, text= "You've done " + str(pushupsDone) + " pushups total!", fg="blue", bg="#f5f5dc")
     myLabel2.grid(row=1, column=0)
-    myButton1 = Button(frame, text="Workout" , padx=20, pady=15, fg="blue", bg="#f5f5dc", command=workout)
+    myButton1 = Button(frame, text="Workout", width=15, height=5, padx=20, pady=15, fg="blue", bg="#f5f5dc", command=workout)
     myButton1.grid(row=2, column=0)
-    myButton1 = Button(frame, text="View Stats" , padx=20, pady=15, fg="blue", bg="#f5f5dc", command=viewStats)
+    myButton1 = Button(frame, text="View Stats" , width=15, height=5, padx=20, pady=15, fg="blue", bg="#f5f5dc", command=viewStats)
     myButton1.grid(row=3, column=0)
-    myButton1 = Button(frame, text="Back", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
+    myButton1 = Button(frame, text="Back", width=15, height=5, padx=20, pady=15, fg="blue", bg="#f5f5dc", command=myClick)
     myButton1.grid(row=4, column=0)
 
 def createUserFrame(root, userNum):
@@ -414,22 +472,22 @@ def mainFrame(root):
 
 
     #Stuff in Frame
-    myLabel1 = Label(frame, text="Welcome to", fg="blue", bg="#f5f5dc", font=("Arial", 25))
-    myLabel2 = Label(frame, text="Workout Buddy!", fg="blue", bg="#f5f5dc", font=("Arial", 25))
-    myLabel3 = Label(frame, text="Choose your user", font=("Arial", 10))
+    myLabel1 = Label(frame, text="Welcome to Workout Buddy!", font=("Helvetica", 25, "bold italic"))
+    myLabel2 = Label(frame, text="", fg="blue", bg="#f5f5dc", font=("Helvetica", 25, "bold italic"))
+    myLabel3 = Label(frame, text="Choose your user", font=("Helvetica", 16, "bold italic"))
     blankLabel = Label(frame, font=("Arial", 10))
 
 
     # TODO create a intermediate function to choose between create User and workout frame
-    myButton1 = Button(frame, text=user1, padx=20, pady=15, fg="blue", bg="#f5f5dc", command=lambda:intermediateFunction(1))
-    myButton2 = Button(frame, text=user2, padx=20, pady=15, fg="blue", bg="#f5f5dc", command=lambda:intermediateFunction(2))
-    myButton3 = Button(frame, text=user3, padx=20, pady=15, fg="blue", bg="#f5f5dc", command=lambda:intermediateFunction(3))
-    myButton4 = Button(frame, text="Edit Users", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=deleteUserFunc)
+    myButton1 = Button(frame, width=12, height=5, text=user1, padx=30, pady=15, fg="blue", bg="#f5f5dc", command=lambda:intermediateFunction(1), font=("Helvetica", 16, "bold italic"))
+    myButton2 = Button(frame, width=12, height=5, text=user2, padx=30, pady=15, fg="blue", bg="#f5f5dc", command=lambda:intermediateFunction(2), font=("Helvetica", 16, "bold italic"))
+    myButton3 = Button(frame, width=12, height=5, text=user3, padx=30, pady=15, fg="blue", bg="#f5f5dc", command=lambda:intermediateFunction(3), font=("Helvetica", 16, "bold italic"))
+    myButton4 = Button(frame, width=15, text="Edit Users", padx=20, pady=15, fg="blue", bg="#f5f5dc", command=deleteUserFunc)
 
 
-    myLabel1.grid(row=0, column=0)
-    myLabel2.grid(row=0, column=1)
-    myLabel3.grid(row=1, column=0)
+    myLabel1.grid(row=0, column=1)
+    # myLabel2.grid(row=0, column=1)
+    myLabel3.grid(row=1, column=1)
     myButton1.grid(row=2, column=0)
     myButton2.grid(row=2, column=1)
     myButton3.grid(row=2, column=2)

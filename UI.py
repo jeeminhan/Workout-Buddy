@@ -232,7 +232,6 @@ def showStats(root, userNum, dateRow):
     parameter1 = []
     parameter2 = []
     parameter3 = []
-    parameter4 = []
     avgScore = []
 
 
@@ -250,7 +249,7 @@ def showStats(root, userNum, dateRow):
     elif userNum==3:
         pushUpList = user3PushupsList
     # Getting the specific row
-    pushUpList = pushUpList[int(dateRow)][3]
+    pushUpList = pushUpList[int(dateRow)][2]
     pushUpList = ast.literal_eval(pushUpList)
 
     for i in range(len(pushUpList)):
@@ -264,8 +263,7 @@ def showStats(root, userNum, dateRow):
         parameter1.append(pushUpList[i][0])
         parameter2.append(pushUpList[i][1])
         parameter3.append(pushUpList[i][2])
-        parameter4.append(pushUpList[i][3])
-        avg = ((pushUpList[i][0]+pushUpList[i][1]+pushUpList[i][2]+pushUpList[i][3])/4)
+        avg = ((pushUpList[i][0]+pushUpList[i][1]+pushUpList[i][2])/3)
         avg = "{avg:.2f}".format(avg=avg)
         avgScore.append(avg)
 
@@ -279,16 +277,18 @@ def showStats(root, userNum, dateRow):
     # myscrollbar=Scrollbar(frame, orient="vertical")
     # myscrollbar.grid(row=2, column = 0,fill="y")
 
+    print()
+
     test.delete(1.0,END)   # Delete text from widget if there is any
-    test.insert(END,'Rep:   Avg Score:    P1   P2    P3    P4:\n')
+    test.insert(END,'Rep:   Avg Score:    P1   P2    P3:\n')
     for index in range(len(pushUpRep)):
         col1 = '{:<8}'.format(pushUpRep[index])
         col2 = '{:<8}'.format(avgScore[index])
         col3 = '{:<5}'.format(parameter1[index])
         col4 = '{:<5}'.format(parameter2[index])
         col5 = '{:<5}'.format(parameter3[index])
-        col6 = '{:<5}'.format(parameter4[index])
-        line = col1 + col2 + col3 + col4 + col5 + col6+ '\n'
+        
+        line = col1 + col2 + col3 + col4 + col5 + '\n'
         test.insert(END,line)
 
     

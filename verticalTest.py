@@ -13,6 +13,8 @@ test.insert(END,'Rep:   Score:     Comment:\n')
 for index in range(len(pushUpRep)):
     col1 = '{:<8}'.format(pushUpRep[index])
     col2 = '{:<13}'.format(percentScore[index])
+    col2 = '{:<13}'.format(percentScore[index])
+
     col3 = '{}'.format(comments[index])
     line = col1 + col2 + col3 + '\n'
     test.insert(END,line)

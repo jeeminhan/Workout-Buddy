@@ -1,6 +1,7 @@
 import cv2
 import mediapipe as mp
 import math
+from datetime import *
 
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -9,6 +10,7 @@ mp_pose = mp.solutions.pose
 #count = 0
 push_up_pos = None
 squat_pos = None
+bye_pos = None
 
 def push_up(imlist):
     global push_up_pos
@@ -188,11 +190,29 @@ def squat_commenter(knees_rating, center_rating, feet_rating):
         comments += "Make sure both feet are completely on the ground, focus on balance"
 
     return comments
+
+def byebye(imlist):
+    global bye_pos
+
+    bye = False
+    
+    if(imlist[14][2] > imlist[16][2]) and (imlist[16][1] > imlist[14][1]):
+        bye_pos = "left"
+
+    if(imlist[14][2] > imlist[16][2]) and (imlist[16][1] < imlist[14][1]) and bye_pos == "left":
+        bye_pos = "right"
+        bye = True
+
+    return bye
+
 # For webcam input:
 def workout(exercise_option):
 
+    cur_time = time()
+    #print(time)
     avg_rating = 0
     count = 0
+    bye_count = 0
     poses = ''
     cap = cv2.VideoCapture(0)
     font = cv2.FONT_HERSHEY_SIMPLEX
@@ -244,7 +264,6 @@ def workout(exercise_option):
                         
                             elbow_rating, center_rating = push_ups_rating(imlist)
                         
-                            
                             if push_up(imlist):
                                 poses = 'Push-ups: '
                                 #print("Elbow: ", elbow_rating, "Center: ", center_rating)
@@ -271,7 +290,7 @@ def workout(exercise_option):
                                 print("Average: ", avg, " Elbow: ", elbow_rating, " Center: ", center_rating, " Height: ", height_rating)
                         
                     elif exercise_option == 2:
-                        if(imlist[24][2]<imlist[28][2]):
+                        if(imlist[24][2]<imlist[28][2] and imlist[28][2]):
 
                             knees_rating, center_rating, feet_rating = squat_rater(imlist)
 
@@ -289,8 +308,20 @@ def workout(exercise_option):
                                 rep_rating.append([knees_rating, center_rating, feet_rating])
 
                                 print("Average: ", avg, " Knees: ", knees_rating, " Center: ", center_rating, " Feet: ", feet_rating)
-
-            
+                    # if byebye(imlist):
+                    #     bye_count += 1
+                    #     #print(bye_count)
+                    # if(bye_count == 3):
+                    #     break
+                    # if(bye_count == 1):
+                    #     cur_time = time()
+                    # delta = cur_time - time()
+                    # #print(delta)
+                    # if(bye_count != 3) and delta > 5:
+                    #     bye_count = 0
+                    # if key == ord('q'):
+                    #     break
+                        
             # Flip the image horizontally for a selfie-view display.
             image=cv2.flip(image,1)
             
@@ -306,7 +337,7 @@ def workout(exercise_option):
                 cv2.putText(image,
                         str(rep_rating[len(rep_rating) - 1][0]) + " " + str(rep_rating[len(rep_rating) - 1][1]) + " " + str(rep_rating[len(rep_rating) - 1][2]),
                         #"test",
-                        (200, 450), 
+                        (50, 450), 
                         font, 1, 
                         (0, 0, 0), 
                         2, 
@@ -316,7 +347,7 @@ def workout(exercise_option):
             
             key=cv2.waitKey(1)
             if key == ord('q'):
-                break
+                    break
         
     cap.release()
     cv2.destroyAllWindows()

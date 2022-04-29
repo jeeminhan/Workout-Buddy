@@ -107,7 +107,7 @@ def workingOutSkeleton():
     parameterList = []
     for i in range(pushUpRep):
         row = []
-        for j in range(4):
+        for j in range(3):
             row.append(random.randint(1,100))
         parameterList.append(row)
     rating = "{rating:.2f}".format(rating=rating)

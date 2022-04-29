@@ -396,10 +396,12 @@ def showStats(root, userNum, dateRow, workoutType):
     else:
         if workoutType == 1:
             line = workout_bud.push_up_comments(col1Total,col2Total,col3Total)
+            test.insert(END,line+'\n\n')
+            test.insert(END,'Rep:   Avg Score:    Elbow Rating   Center Rating    Height Rating:\n')
         elif workoutType == 2:
             line = workout_bud.squat_commenter(col1Total,col2Total,col3Total)
-        test.insert(END,line+'\n\n')
-        test.insert(END,'Rep:   Avg Score:    Elbow Rating   Center Rating    Height Rating:\n')
+            test.insert(END,line+'\n\n')
+            test.insert(END,'Rep:   Avg Score:    Knee Rating   Center Rating    Feet Rating:\n')
     for index in range(len(pushUpRep)):
         col1 = '{:<8}'.format(pushUpRep[index])
         col2 = '{:<13}'.format(avgScore[index])

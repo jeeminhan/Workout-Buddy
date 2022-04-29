@@ -310,7 +310,8 @@ def workout(exercise_option):
                                 print("Average: ", avg, " Knees: ", knees_rating, " Center: ", center_rating, " Feet: ", feet_rating)
 
                     if byebye(imlist):
-                        bye_count += 1
+                        if squat_pos != "down":
+                            bye_count += 1
                         #print(bye_count)
                     if(bye_count == 3):
                         break
@@ -361,4 +362,4 @@ def workout(exercise_option):
 
     return count, avg_rating, rep_rating
 
-workout(1)
+workout(2)

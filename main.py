@@ -419,6 +419,7 @@ def showStats(root, userNum, dateRow, workoutType):
     
 
 def viewStatsFrame(root, userNum, workoutType):
+    reset()
     pushUpList = []
     options = []
     frame = Frame(root)
@@ -779,6 +780,40 @@ with open('CSV_Files/user3Squats.csv', 'r') as file:
         user3SquatsList.append(row)
         
 
+
+def reset():
+    global user1PushupsList 
+    global user2PushupsList 
+    global user3PushupsList 
+    global user1SquatsList 
+    global user2SquatsList 
+    global user3SquatsList 
+    with open('CSV_Files/user1Pushups.csv', 'r') as file:
+        data = csv.reader(file)
+        for row in data:
+            user1PushupsList.append(row)
+    with open('CSV_Files/user2Pushups.csv', 'r') as file:
+        data = csv.reader(file)
+        for row in data:
+            user2PushupsList.append(row)
+    with open('CSV_Files/user3Pushups.csv', 'r') as file:
+        data = csv.reader(file)
+        for row in data:
+            user3PushupsList.append(row)
+
+    with open('CSV_Files/user1Squats.csv', 'r') as file:
+        data = csv.reader(file)
+        for row in data:
+            user1SquatsList.append(row)
+    with open('CSV_Files/user2Squats.csv', 'r') as file:
+        data = csv.reader(file)
+        for row in data:
+            user2SquatsList.append(row)
+    with open('CSV_Files/user3Squats.csv', 'r') as file:
+        data = csv.reader(file)
+        for row in data:
+            user3SquatsList.append(row)
+       
 # with open('CSV_Files/user1Pushups.csv', 'r') as file:
 #     data = csv.reader(file)
 #     i=0

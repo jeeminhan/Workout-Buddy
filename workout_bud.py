@@ -361,4 +361,4 @@ def workout(exercise_option):
 
     return count, avg_rating, rep_rating
 
-workout(2)
+#workout(2)

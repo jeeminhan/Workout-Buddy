@@ -345,8 +345,9 @@ def workout(exercise_option):
                         (0, 0, 0), 
                         2, 
                         cv2.LINE_4)
+            imageS = cv2.resize(image, (800, 400))    
 
-            cv2.imshow('MediaPipe Pose', image)
+            cv2.imshow('MediaPipe Pose', imageS)
             
             key=cv2.waitKey(1)
             if key == ord('q'):

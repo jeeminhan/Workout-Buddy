@@ -76,7 +76,7 @@ def saveWorkout(userNum, reps, totalScore, parameterList, timeObj=datetime.now()
     fileName = ""
     dateRepCommentList = [curr_time_str, reps, totalScore, parameterList]
     if userNum==1:
-        fileName = "CSV_Files/user1Pushups.csv"         
+        fileName = "CSV_Files/user1Squats.csv"         
     elif userNum==2:
         fileName = "CSV_Files/user2Pushups.csv" 
     elif userNum==3:
@@ -89,6 +89,8 @@ def saveWorkout(userNum, reps, totalScore, parameterList, timeObj=datetime.now()
             parameterString = ""
             for parameter in x:
                 parameterString = parameterString + str(parameter) + " "
+    print("workin")
+
 
 
 
@@ -111,14 +113,17 @@ def workingOutSkeleton():
             row.append(random.randint(1,100))
         parameterList.append(row)
     rating = "{rating:.2f}".format(rating=rating)
+    print("workin")
     return finalTime, pushUpRep, float(rating), parameterList
 #Create an instance of tkinter frame
 
 
-finalTimeVar, repsVar, totalScoreVar, paramListVar = workingOutSkeleton()
+print('jsdfsd')
 
-for i in range(10):
+finalTimeVar, repsVar, totalScoreVar, paramListVar = workingOutSkeleton()
+for i in range(20):
+    print("working")
     finalTimeVar, repsVar, totalScoreVar, paramListVar = workingOutSkeleton()
-    saveWorkout(1, repsVar, totalScoreVar, paramListVar, finalTimeVar)
+    saveWorkout(2, repsVar, totalScoreVar, paramListVar, finalTimeVar)
 
         

@@ -208,7 +208,7 @@ def byebye(imlist):
 # For webcam input:
 def workout(exercise_option):
 
-    cur_time = time()
+    cur_time = datetime.now()
     #print(time)
     avg_rating = 0
     count = 0
@@ -308,19 +308,21 @@ def workout(exercise_option):
                                 rep_rating.append([knees_rating, center_rating, feet_rating])
 
                                 print("Average: ", avg, " Knees: ", knees_rating, " Center: ", center_rating, " Feet: ", feet_rating)
-                    # if byebye(imlist):
-                    #     bye_count += 1
-                    #     #print(bye_count)
-                    # if(bye_count == 3):
-                    #     break
-                    # if(bye_count == 1):
-                    #     cur_time = time()
-                    # delta = cur_time - time()
-                    # #print(delta)
-                    # if(bye_count != 3) and delta > 5:
-                    #     bye_count = 0
-                    # if key == ord('q'):
-                    #     break
+
+                        if byebye(imlist):
+                            bye_count += 1
+                            #print(bye_count)
+                        if(bye_count == 3):
+                            break
+                        if(bye_count == 1):
+                            cur_time = datetime.now()
+                        time_diff = cur_time - datetime.now()
+                        secs = time_diff.total_seconds()
+                        #print(delta)
+                        if(bye_count != 3) and secs > 5:
+                            bye_count = 0
+                        #if key == ord('q'):
+                        #   break
                         
             # Flip the image horizontally for a selfie-view display.
             image=cv2.flip(image,1)

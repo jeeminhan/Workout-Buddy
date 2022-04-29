@@ -45,6 +45,7 @@ def finishedWorkoutScreen(root, userNum, workoutType):
             pushUpList = user3SquatsList
     # Getting the specific row
     pushUpList = pushUpList[len(pushUpList)-1][3]
+    print(pushUpList)
     #converting the list
     pushUpList = ast.literal_eval(pushUpList)
 

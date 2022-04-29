@@ -705,9 +705,9 @@ def mainFrame(root):
 
 
     # TODO create a intermediate function to choose between create User and workout frame
-    myButton1 = Button(frame, width=8, height=5, text=user1, padx=30, pady=15, fg="blue", command=lambda:intermediateFunction(1), font=("Helvetica", 16, "bold italic"))
-    myButton2 = Button(frame, width=8, height=5, text=user2, padx=30, pady=15, fg="blue", command=lambda:intermediateFunction(2), font=("Helvetica", 16, "bold italic"))
-    myButton3 = Button(frame, width=8, height=5, text=user3, padx=30, pady=15, fg="blue", command=lambda:intermediateFunction(3), font=("Helvetica", 16, "bold italic"))
+    myButton1 = Button(frame, width=8, height=5, text=user1, padx=15, pady=15, fg="blue", command=lambda:intermediateFunction(1), font=("Helvetica", 16, "bold italic"))
+    myButton2 = Button(frame, width=8, height=5, text=user2, padx=15, pady=15, fg="blue", command=lambda:intermediateFunction(2), font=("Helvetica", 16, "bold italic"))
+    myButton3 = Button(frame, width=8, height=5, text=user3, padx=15, pady=15, fg="blue", command=lambda:intermediateFunction(3), font=("Helvetica", 16, "bold italic"))
     myButton4 = Button(frame, width=12, text="Edit Users", padx=20, pady=15, fg="blue", command=deleteUserFunc)
 
 

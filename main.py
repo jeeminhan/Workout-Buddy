@@ -216,6 +216,7 @@ def workoutFrame(root, userNum):
                 fileName = "CSV_Files/user3Pushups.csv" 
             with open(fileName, 'a') as csvfile: 
                 dateRepCommentList = [curr_time_str, reps, totalScore, parameterList]
+                print(dateRepCommentList)
                 csvWriter = csv.writer(csvfile) 
                 csvWriter.writerow(dateRepCommentList)
         elif optionWorkout == 2:
@@ -227,6 +228,7 @@ def workoutFrame(root, userNum):
                 fileName = "CSV_Files/user3Squats.csv" 
             with open(fileName, 'a') as csvfile: 
                 dateRepCommentList = [curr_time_str, reps, totalScore, parameterList]
+                print(dateRepCommentList)
                 csvWriter = csv.writer(csvfile) 
                 csvWriter.writerow(dateRepCommentList)
         for widgets in frame.winfo_children():
@@ -499,7 +501,7 @@ def viewStatsFrame(root, userNum, workoutType):
     # RB2 = Radiobutton(frame, text="Squats", variable=r, value=2, command=lambda: radioButtonPress(r.get()))
     # RB2.grid(row=1, column=1)
     # print(options)
-    options.reverse()
+    # options.reverse()
     drop = OptionMenu(frame, clicked, *options)
     drop.grid(row=1, column=0)
 

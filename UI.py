@@ -385,18 +385,21 @@ def showStats(root, userNum, dateRow, workoutType):
     # myscrollbar=Scrollbar(frame, orient="vertical")
     # myscrollbar.grid(row=2, column = 0,fill="y")
 
-    col1Total = col1Total/len(pushUpRep)
-    col2Total = col2Total/len(pushUpRep)
-    col3Total = col3Total/len(pushUpRep)
+    col1Total = col1Total/len(pushUpRep) if col1Total else 0
+    col2Total = col2Total/len(pushUpRep) if col1Total else 0
+    col3Total = col3Total/len(pushUpRep) if col1Total else 0
 
     test.delete(1.0,END)   # Delete text from widget if there is any
     test.insert(END,'Things to work on:\n')
-    if workoutType == 1:
-        line = workout_bud.push_up_comments(col1Total,col2Total,col3Total)
-    elif workoutType == 2:
-        line = workout_bud.squat_commenter(col1Total,col2Total,col3Total)
-    test.insert(END,line+'\n\n')
-    test.insert(END,'Rep:   Avg Score:    Elbow Rating   Center Rating    Height Rating:\n')
+    if not pushUpList:
+        test.insert(END,'No pushups or squats recorded for this workout:\n')
+    else:
+        if workoutType == 1:
+            line = workout_bud.push_up_comments(col1Total,col2Total,col3Total)
+        elif workoutType == 2:
+            line = workout_bud.squat_commenter(col1Total,col2Total,col3Total)
+        test.insert(END,line+'\n\n')
+        test.insert(END,'Rep:   Avg Score:    Elbow Rating   Center Rating    Height Rating:\n')
     for index in range(len(pushUpRep)):
         col1 = '{:<8}'.format(pushUpRep[index])
         col2 = '{:<13}'.format(avgScore[index])
@@ -591,11 +594,11 @@ def userInfoFrame(root, userNum):
     avgRating = (avgRating+avgRatingSquat)/2
     avgRating = "{avg:.2f}".format(avg=avgRating)
 
-    myLabel1 = Label(frame, text="Welcome " + currentUser+ " you can view your workout stats or start a workout", font=("Helvetica", 14, "bold italic"), fg='blue')
+    myLabel1 = Label(frame, text="Welcome " + currentUser+ " you can view your workout stats or start a workout", font=("Helvetica", 12, "bold italic"), fg='blue')
     myLabel1.grid(row=0, column=1)
-    myLabel2 = Label(frame, text= "You've done " + str(pushupsDone+squatsDone) + " squats and pushups total!", font=("Helvetica", 18, "bold italic"))
+    myLabel2 = Label(frame, text= "You've done " + str(pushupsDone+squatsDone) + " squats and pushups total!", font=("Helvetica", 17, "bold italic"))
     myLabel2.grid(row=1, column=1)
-    myLabel2 = Label(frame, text= "Your average rating is " + str(avgRating) + " for all workouts!", font=("Helvetica", 18, "bold italic"))
+    myLabel2 = Label(frame, text= "Your average rating is " + str(avgRating) + " for all workouts!", font=("Helvetica", 17, "bold italic"))
     myLabel2.grid(row=2, column=1)
     myLabel3 = Label(frame, text= "You've completed " + str(workoutsCompleted+workoutsCompletedSquat) + " workouts!", font=("Helvetica", 18, "bold italic"))
     myLabel3.grid(row=3, column=1)
@@ -705,9 +708,9 @@ def mainFrame(root):
 
 
     # TODO create a intermediate function to choose between create User and workout frame
-    myButton1 = Button(frame, width=8, height=5, text=user1, padx=15, pady=15, fg="blue", command=lambda:intermediateFunction(1), font=("Helvetica", 16, "bold italic"))
-    myButton2 = Button(frame, width=8, height=5, text=user2, padx=15, pady=15, fg="blue", command=lambda:intermediateFunction(2), font=("Helvetica", 16, "bold italic"))
-    myButton3 = Button(frame, width=8, height=5, text=user3, padx=15, pady=15, fg="blue", command=lambda:intermediateFunction(3), font=("Helvetica", 16, "bold italic"))
+    myButton1 = Button(frame, width=8, height=5, text=user1, padx=15, pady=15, fg="blue", command=lambda:intermediateFunction(1), font=("Helvetica", 14, "bold italic"))
+    myButton2 = Button(frame, width=8, height=5, text=user2, padx=15, pady=15, fg="blue", command=lambda:intermediateFunction(2), font=("Helvetica", 14, "bold italic"))
+    myButton3 = Button(frame, width=8, height=5, text=user3, padx=15, pady=15, fg="blue", command=lambda:intermediateFunction(3), font=("Helvetica", 14, "bold italic"))
     myButton4 = Button(frame, width=12, text="Edit Users", padx=20, pady=15, fg="blue", command=deleteUserFunc)
 
 
@@ -814,6 +817,6 @@ frame = mainFrame(root)
 
 
 #Set the geometry of frame
-root.geometry("800x400")
+root.geometry("700x400")
 
 root.mainloop()

@@ -173,9 +173,9 @@ def deleteUser(root):
     myLabel1 = Label(frame, text="Which user would you like to delete?", font=("Helvetica", 18, "bold italic"))
     myLabel1.grid(row=0, column=1)
 
-    myButton1 = Button(frame, text=user1, width=10, height=2, padx=20, pady=15, fg="blue", command=lambda:myClick(1), font=("Helvetica", 25, "bold italic"))
-    myButton2 = Button(frame, text=user2, width=10, height=2, padx=20, pady=15, fg="blue", command=lambda:myClick(2), font=("Helvetica", 25, "bold italic"))
-    myButton3 = Button(frame, text=user3, width=10, height=2,padx=20, pady=15, fg="blue", command=lambda:myClick(3), font=("Helvetica", 25, "bold italic"))
+    myButton1 = Button(frame, text=user1, width=8, height=2, padx=20, pady=15, fg="blue", command=lambda:myClick(1), font=("Helvetica", 25, "bold italic"))
+    myButton2 = Button(frame, text=user2, width=8, height=2, padx=20, pady=15, fg="blue", command=lambda:myClick(2), font=("Helvetica", 25, "bold italic"))
+    myButton3 = Button(frame, text=user3, width=8, height=2,padx=20, pady=15, fg="blue", command=lambda:myClick(3), font=("Helvetica", 25, "bold italic"))
     myButton1.grid(row=1, column=0)
     myButton2.grid(row=1, column=1)
     myButton3.grid(row=1, column=2)
@@ -379,7 +379,7 @@ def showStats(root, userNum, dateRow, workoutType):
         
     myButton2 = Button(frame, text="Back", padx=20, pady=15, fg="blue", command=myClick, font=("Helvetica", 25, "bold italic"))
     myButton2.grid(row=1, column=0)
-    test = Text(frame, width=110, height=24)
+    test = Text(frame, width=110, height=20)
     test.grid(row=0, column=0, padx=10, pady=10, sticky='nsew')
     #ADDING A SCROLLBAR
     # myscrollbar=Scrollbar(frame, orient="vertical")
@@ -705,10 +705,10 @@ def mainFrame(root):
 
 
     # TODO create a intermediate function to choose between create User and workout frame
-    myButton1 = Button(frame, width=12, height=5, text=user1, padx=30, pady=15, fg="blue", command=lambda:intermediateFunction(1), font=("Helvetica", 16, "bold italic"))
-    myButton2 = Button(frame, width=12, height=5, text=user2, padx=30, pady=15, fg="blue", command=lambda:intermediateFunction(2), font=("Helvetica", 16, "bold italic"))
-    myButton3 = Button(frame, width=12, height=5, text=user3, padx=30, pady=15, fg="blue", command=lambda:intermediateFunction(3), font=("Helvetica", 16, "bold italic"))
-    myButton4 = Button(frame, width=15, text="Edit Users", padx=20, pady=15, fg="blue", command=deleteUserFunc)
+    myButton1 = Button(frame, width=8, height=5, text=user1, padx=30, pady=15, fg="blue", command=lambda:intermediateFunction(1), font=("Helvetica", 16, "bold italic"))
+    myButton2 = Button(frame, width=8, height=5, text=user2, padx=30, pady=15, fg="blue", command=lambda:intermediateFunction(2), font=("Helvetica", 16, "bold italic"))
+    myButton3 = Button(frame, width=8, height=5, text=user3, padx=30, pady=15, fg="blue", command=lambda:intermediateFunction(3), font=("Helvetica", 16, "bold italic"))
+    myButton4 = Button(frame, width=12, text="Edit Users", padx=20, pady=15, fg="blue", command=deleteUserFunc)
 
 
     myLabel1.grid(row=0, column=1, padx=20, pady=(50,10))

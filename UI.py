@@ -87,7 +87,7 @@ def finishedWorkoutScreen(root, userNum, workoutType):
 
 
     # the figure that will contain the plot
-    fig = Figure(figsize = (8, 3),
+    fig = Figure(figsize = (8, 2),
                  dpi = 100)
   
     # list of squares

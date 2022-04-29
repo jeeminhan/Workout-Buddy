@@ -10,6 +10,7 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, 
 NavigationToolbar2Tk)
 def finishedWorkoutScreen(root, userNum, workoutType):
+    reset()
     frame = Frame(root)
     frame.grid(row=0, column=0)
 

@@ -817,6 +817,6 @@ frame = mainFrame(root)
 
 
 #Set the geometry of frame
-root.geometry("700x400")
+root.geometry("800x400")
 
 root.mainloop()

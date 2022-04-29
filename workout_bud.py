@@ -313,7 +313,7 @@ def workout(exercise_option):
                         if squat_pos != "down":
                             bye_count += 1
                         #print(bye_count)
-                    if(bye_count == 5):
+                    if(bye_count == 3):
                         break
                     if(bye_count == 1):
                         cur_time = datetime.now()

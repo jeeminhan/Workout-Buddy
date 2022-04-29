@@ -594,7 +594,7 @@ def userInfoFrame(root, userNum):
     avgRating = (avgRating+avgRatingSquat)/2
     avgRating = "{avg:.2f}".format(avg=avgRating)
 
-    myLabel1 = Label(frame, text="Welcome " + currentUser+ " you can view your workout stats or start a workout", font=("Helvetica", 12, "bold italic"), fg='blue')
+    myLabel1 = Label(frame, text="Welcome " + currentUser+ " you can view your workout stats or start a workout", font=("Helvetica", 11, "bold italic"), fg='blue')
     myLabel1.grid(row=0, column=1)
     myLabel2 = Label(frame, text= "You've done " + str(pushupsDone+squatsDone) + " squats and pushups total!", font=("Helvetica", 17, "bold italic"))
     myLabel2.grid(row=1, column=1)
@@ -602,13 +602,13 @@ def userInfoFrame(root, userNum):
     myLabel2.grid(row=2, column=1)
     myLabel3 = Label(frame, text= "You've completed " + str(workoutsCompleted+workoutsCompletedSquat) + " workouts!", font=("Helvetica", 18, "bold italic"))
     myLabel3.grid(row=3, column=1)
-    myButton1 = Button(frame, text="Workout", width=15, height=5, padx=20, pady=15, command=workout, font=("Helvetica", 13, "bold italic"))
+    myButton1 = Button(frame, text="Workout", width=15, height=5, padx=16, pady=15, command=workout, font=("Helvetica", 13, "bold italic"))
     myButton1.grid(row=1, column=0)
     myButton2 = Button(frame, text="View Push-Up Stats" , width=15, height=2, padx=20, pady=5, command=lambda:viewStats(1), font=("Helvetica", 13, "bold italic"))
     myButton2.grid(row=2, column=0)
     myButton3 = Button(frame, text="View Squat Stats" , width=15, height=2, padx=20, pady=5, command=lambda:viewStats(2), font=("Helvetica", 13, "bold italic"))
     myButton3.grid(row=3, column=0)
-    myButton4 = Button(frame, text="Back", width=15, height=5, padx=20, pady=15, command=myClick, font=("Helvetica", 13, "bold italic"))
+    myButton4 = Button(frame, text="Back", width=15, height=5, padx=16, pady=15, command=myClick, font=("Helvetica", 13, "bold italic"))
     myButton4.grid(row=4, column=0)
 
 def createUserFrame(root, userNum):

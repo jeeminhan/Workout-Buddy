@@ -309,20 +309,20 @@ def workout(exercise_option):
 
                                 print("Average: ", avg, " Knees: ", knees_rating, " Center: ", center_rating, " Feet: ", feet_rating)
 
-                        if byebye(imlist):
-                            bye_count += 1
-                            #print(bye_count)
-                        if(bye_count == 3):
-                            break
-                        if(bye_count == 1):
-                            cur_time = datetime.now()
-                        time_diff = cur_time - datetime.now()
-                        secs = time_diff.total_seconds()
-                        #print(delta)
-                        if(bye_count != 3) and secs > 5:
-                            bye_count = 0
-                        #if key == ord('q'):
-                        #   break
+                    if byebye(imlist):
+                        bye_count += 1
+                        #print(bye_count)
+                    if(bye_count == 3):
+                        break
+                    if(bye_count == 1):
+                        cur_time = datetime.now()
+                    time_diff = cur_time - datetime.now()
+                    secs = time_diff.total_seconds()
+                    #print(delta)
+                    if(bye_count != 3) and secs > 5:
+                        bye_count = 0
+                    #if key == ord('q'):
+                    #   break
                         
             # Flip the image horizontally for a selfie-view display.
             image=cv2.flip(image,1)
@@ -361,4 +361,4 @@ def workout(exercise_option):
 
     return count, avg_rating, rep_rating
 
-#workout(2)
+workout(1)
